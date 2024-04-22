@@ -1,0 +1,17 @@
+import {isAkamaiCookieInvalidated, isAkamaiCookieValid} from "./stop_signal";
+
+test("Test isCookieValid", () => {
+    const valid = `0C8A2251CC04F60F59160D6AD92DA8A0~0~YAAQlivJF6o1GjGGAQAAaNihYgldsErwKa3aAlB+oRlgZYviinJa+Q29XMXmkwJUNCgQPooQUyhfjhAgavSMACfCk1doYnUa4dYmsVUWbWB+QGFEPuwcvLVQscLV8taHWIFuFxb94vEJ8MnSY9sQlhRN9i2iNgZ5QJz8h2s2mMm4ZO+i890DPaHfJPkSrYtc9ivgbjDA/jFpK6k2Pq8Pu25dCI55zOqOeSyaChgtJyF6KvlnlyVrqOa12tThX+prb52et7FRGmqhw8LU5X1E07WShiKDmJw2Rb8+odHcA28bD3EITXTy43QFb2PKR9Q3jy57KFEQYFaeW4xfAe8BxjdpkYt5vSH50nmbi1SXOWIxL4QV0b8psJgMCIq+ZMR+ZBU2opuHgxAucktvbIffGuJPWFYJu8thjxr5HGBtZBUqc6LwccFQI+DZd+hpZfsRJscvNx0yWmiPN8/gJiVLGkjHWYL5xmVaVCYceTtGL+7N~-1~-1~-1`;
+    const invalid = `3B508597CDC152514C3D85CF2749455C~-1~YAAQNcMTAgMgNEyKAQAAaxaxTwrFBKU37u+fFlXF8NMV3M3n4A2lNyvNTV14HhbYAyJWQdsaUYXmjc/7GGsPQ8EYyPjUZr6X8guTu9q9mZY2ZeF5IWdB2jRHLVzEttloRl8RMGS+dP34QSaMYx98elcgQchq+DAiRDB1XoeKDzwdZnxhfLRu8vAilIaR+i/NPf1Y1fR+n85SIp5OlpMJYK71eoL/D9wZTbpZQVHbSP4rhHG4wNaHNkuo5KkwWpgbQfLWIwhatuhn/xZ1mJEQVnZwhHg9aDF+ooxiPm+2+HK/QI5zSGZ8zz9CMZ9PI+jegXtqznth6eBXJ7ZXCr5VfgjnepKpJW3WJfKv53dHHWUtkuBEOTozjuR1RYcsFo07oNmUqWBhQ0EslRCJpMAn7ehwuyC2w7BRlrZuSvDOAcxUgbgN2LSBEA==~-1~-1~-1`;
+
+    expect(isAkamaiCookieValid(valid, 1)).toBe(true);
+    expect(isAkamaiCookieValid(invalid, 1)).toBe(false);
+});
+
+test("Test isCookieInvalidated", () => {
+    const valid = `0C8A2251CC04F60F59160D6AD92DA8A0~0~YAAQlivJF6o1GjGGAQAAaNihYgldsErwKa3aAlB+oRlgZYviinJa+Q29XMXmkwJUNCgQPooQUyhfjhAgavSMACfCk1doYnUa4dYmsVUWbWB+QGFEPuwcvLVQscLV8taHWIFuFxb94vEJ8MnSY9sQlhRN9i2iNgZ5QJz8h2s2mMm4ZO+i890DPaHfJPkSrYtc9ivgbjDA/jFpK6k2Pq8Pu25dCI55zOqOeSyaChgtJyF6KvlnlyVrqOa12tThX+prb52et7FRGmqhw8LU5X1E07WShiKDmJw2Rb8+odHcA28bD3EITXTy43QFb2PKR9Q3jy57KFEQYFaeW4xfAe8BxjdpkYt5vSH50nmbi1SXOWIxL4QV0b8psJgMCIq+ZMR+ZBU2opuHgxAucktvbIffGuJPWFYJu8thjxr5HGBtZBUqc6LwccFQI+DZd+hpZfsRJscvNx0yWmiPN8/gJiVLGkjHWYL5xmVaVCYceTtGL+7N~-1~-1~-1`;
+    const invalid = `3B508597CDC152514C3D85CF2749455C~-1~YAAQNcMTAgMgNEyKAQAAaxaxTwrFBKU37u+fFlXF8NMV3M3n4A2lNyvNTV14HhbYAyJWQdsaUYXmjc/7GGsPQ8EYyPjUZr6X8guTu9q9mZY2ZeF5IWdB2jRHLVzEttloRl8RMGS+dP34QSaMYx98elcgQchq+DAiRDB1XoeKDzwdZnxhfLRu8vAilIaR+i/NPf1Y1fR+n85SIp5OlpMJYK71eoL/D9wZTbpZQVHbSP4rhHG4wNaHNkuo5KkwWpgbQfLWIwhatuhn/xZ1mJEQVnZwhHg9aDF+ooxiPm+2+HK/QI5zSGZ8zz9CMZ9PI+jegXtqznth6eBXJ7ZXCr5VfgjnepKpJW3WJfKv53dHHWUtkuBEOTozjuR1RYcsFo07oNmUqWBhQ0EslRCJpMAn7ehwuyC2w7BRlrZuSvDOAcxUgbgN2LSBEA==~0~-1~-1`;
+
+    expect(isAkamaiCookieInvalidated(valid)).toBe(false);
+    expect(isAkamaiCookieInvalidated(invalid)).toBe(true);
+});

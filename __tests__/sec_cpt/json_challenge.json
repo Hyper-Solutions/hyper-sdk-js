@@ -1,0 +1,12 @@
+{
+  "sec-cp-challenge": "true",
+  "provider": "crypto",
+  "branding_url_content": "/_sec/cp_challenge/crypto_message-4-3.htm",
+  "chlg_duration": 30,
+  "token": "AAQAAAAJ_____9z_ZPsdHbk36hg2f6np2sGJDXmkwGmBiMBr_DDEmSWfi8Zt7BdtjWrNd9KD4DS_vim0VnK2wsa8tIC7XWsCshkvDF9J9Rf5EFwBU00c6SMXTaSNSTcDR-HVFGp3uAa67Mb3I6HeifXbjALcEomjcnwa9ZNQdDWuTAUTgNGbYw09A8AXIuP9DNv3QktUx488FV38Rm6xBXr66-MmD05hsBhucIYpLS_VCJVs9OFPnWsksPJ19ibw2K3fabfJbzIdB3Xv3J0kzLQ0gY7bpLRXK1oAcUTxNNsy-LQGe_lyV6INQ4ojPLGJpOTk",
+  "timestamp": 1713283747,
+  "nonce": "ebccdb479fcb92636fbc",
+  "difficulty": 15000,
+  "timeout": 1000,
+  "cpu": false
+}
