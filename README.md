@@ -174,6 +174,58 @@ import {generateUtmvcScriptPath} from "hyper-sdk-js/incapsula/utmvc.js";
 const submitPath = generateUtmvcScriptPath();
 ```
 
+## Kasada
+
+The Kasada package provides functions for interacting with Kasada Bot Manager, including generating payload data, POW data, and parsing script paths.
+
+### Generating Payload Data (CT)
+
+To generate payload data required for generating valid `x-kpsdk-ct` tokens, use the `generateKasadaPayload` function:
+
+```typescript
+import { generateKasadaPayload } from "hyper-sdk-js/kasada/payload.js";
+
+const result = await generateKasadaPayload(session, {
+    userAgent: "...", // Browser user agent to impersonate
+    ipsLink: "...", // The ips.js script link, parsed from the block page (429 status code)
+    script: "...", // The ips.js script retrieved using the IpsLink url
+    language: "..." // Optional: The first language of your accept-language header, defaults to "en-US" if not provided
+});
+
+console.log(result.payload); // The decoded payload, use this to post to /tl
+console.log(result.headers.xKpsdkIm); // Access the x-kpsdk-im header
+```
+
+### Generating POW Data (CD)
+
+To generate POW data (`x-kpsdk-cd`) tokens, use the `generateKasadaPow` function:
+
+```typescript
+import { generateKasadaPow } from "hyper-sdk-js/kasada/pow.js";
+
+const powInput = new KasadaPowInput(
+    0, // st: The x-kpsdk-st value returned by the /tl POST request
+    0 // Optional: workTime for pre-generating POW strings
+);
+
+const payload = await generateKasadaPow(session, powInput);
+console.log(payload); // The generated POW data
+```
+
+### Parsing Script Path
+
+To parse the Kasada script path from the given blocked page (status code 429) HTML code, use the `parseKasadaPath` function:
+
+```typescript
+import { parseKasadaPath } from "hyper-sdk-js/kasada/script_path.js";
+
+const scriptPath = parseKasadaPath(htmlContent);
+if (scriptPath) {
+    console.log(scriptPath); // Will look like: /ips.js?...
+} else {
+    console.log("Script path not found");
+}
+```
 ## Contributing
 
 If you find any issues or have suggestions for improvement, please open an issue or submit a pull request.
