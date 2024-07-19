@@ -103,9 +103,9 @@ export class SliderInput {
 /**
  * Generates a DataDome slider payload that can be used to obtain a solved `datadome` cookie.
  * @param session The {@link Session}
- * @param input The {@link InterstitialInput}
- * @returns {Promise<string>} A {@link Promise} that, when resolved, will contain a interstitial payload
+ * @param input The {@link SliderInput}
+ * @returns {Promise<string>} A {@link Promise} that, when resolved, will contain a slider link
  */
 export function generateSliderPayload(session: Session, input: SliderInput): Promise<string> {
-    return sendRequest(session, "https://datadome.justhyped.dev/interstitial", input);
+    return sendRequest(session, "https://datadome.justhyped.dev/slider", input);
 }
