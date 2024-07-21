@@ -48,12 +48,17 @@ interface IApiResponse {
     /**
      * The payload.
      */
-    payload: string;
+    payload?: string;
 
     /**
      * Kasada headers.
      */
-    headers: KasadaHeaders;
+    headers?: KasadaHeaders;
+
+    /**
+     * Error message.
+     */
+    error?: string;
 }
 
 /**
@@ -106,6 +111,15 @@ export async function generateKasadaPayload(session: Session, input: KasadaPaylo
     }
     if (response.result == null) {
         throw new InvalidApiResponseError("Invalid API response");
+    }
+    if (response.result.error != undefined) {
+        throw new InvalidApiResponseError(response.result.error);
+    }
+    if (response.result.payload == undefined) {
+        throw new InvalidApiResponseError("No payload obtained from API");
+    }
+    if (response.result.headers == undefined) {
+        throw new InvalidApiResponseError("No headers obtained from API");
     }
 
     return {

@@ -9,7 +9,12 @@ interface IApiResponse {
     /**
      * The payload.
      */
-    payload: string;
+    payload?: string;
+
+    /**
+     * Error message.
+     */
+    error?: string;
 }
 
 /**
@@ -50,6 +55,12 @@ export async function sendRequest(session: Session, url: string, input: any): Pr
     }
     if (response.result == null) {
         throw new InvalidApiResponseError("Invalid API response");
+    }
+    if (response.result.error != undefined) {
+        throw new InvalidApiResponseError(response.result.error);
+    }
+    if (response.result.payload == undefined) {
+        throw new InvalidApiResponseError("No payload obtained from API");
     }
     return response.result.payload;
 }
