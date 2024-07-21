@@ -226,6 +226,73 @@ if (scriptPath) {
     console.log("Script path not found");
 }
 ```
+
+## DataDome
+
+The DataDome package provides functions for interacting with DataDome, including generating
+interstitial payloads and solving the slider captcha.
+
+### Generating Interstitial Payload
+
+To generate an interstitial payload, you first need to call the `parseInterstitialDeviceCheckUrl` function
+to obtain the device check URL with the HTML response body from the block page, `datadome` cookie value,
+and referer. You can then call `generateInterstitialPayload` to generate a payload.
+
+```js
+import {parseInterstitialDeviceCheckUrl, generateInterstitialPayload} from "hyper-sdk-js/datadome/interstitial.js";
+
+const deviceCheckUrl = parseInterstitialDeviceCheckUrl(
+    "", // Block page body
+    "", // Value of `datadome` cookie
+    "" // Referer, e.g. URL you are trying to access
+);
+if (deviceCheckUrl === null) {
+    // deviceCheckUrl will be null if parseInterstitialDeviceCheckUrl failed to parse it.
+}
+
+// Response body from doing a GET request to deviceCheckUrl
+const deviceCheckBody = "";
+
+// Generate payload
+const payload = await generateInterstitialPayload(session, {
+    userAgent: "", // Browser user agent to impersonate
+    deviceLink: deviceCheckUrl, // deviceCheckUrl
+    html: deviceCheckBody
+});
+```
+
+### Generating Slider Payload
+
+To generate a slider captcha payload, you first need to call the `parseSliderDeviceCheckUrl` function
+to obtain the device check URL with the HTML response body from the captcha page, `datadome` cookie value,
+and referer. You can then call `generateSliderPayload` to generate a payload.
+
+```js
+import {parseSliderDeviceCheckUrl, generateSliderPayload} from "hyper-sdk-js/datadome/slider.js";
+
+const result = parseSliderDeviceCheckUrl(
+    "", // Block page body
+    "", // Value of `datadome` cookie
+    "" // Referer, e.g. URL you are trying to access
+);
+if (result.isIpBanned) {
+    // IP address is banned.
+    // Note: result.url is null if this is true.
+    return;
+}
+
+// Response body from doing a GET request to result.url
+const deviceCheckBody = "";
+
+const payload = await generateSliderPayload({
+    userAgent: "", // Browser user agent to impersonate
+    deviceLink: result.url,
+    html: deviceCheckBody,
+    puzzle: "", // Puzzle image bytes, base64 encoded (looks like: `https://dd.prod.captcha-delivery.com/image/2024-xx-xx/hash.jpg`)
+    piece: "" // Piece image bytes, base64 encoded (looks like: `https://dd.prod.captcha-delivery.com/image/2024-xx-xx/hash.frag.png`)
+});
+```
+
 ## Contributing
 
 If you find any issues or have suggestions for improvement, please open an issue or submit a pull request.
