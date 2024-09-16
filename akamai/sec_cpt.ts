@@ -31,12 +31,18 @@ export class CryptoChallenge {
      */
     public readonly timeout: number;
 
-    constructor(token: string, timestamp: number, nonce: string, difficulty: number, timeout: number) {
+    /**
+     * The amount of answers to be generated.
+     */
+    public readonly count: number;
+
+    constructor(token: string, timestamp: number, nonce: string, difficulty: number, timeout: number, count: number) {
         this.token = token;
         this.timestamp = timestamp;
         this.nonce = nonce;
         this.difficulty = difficulty;
         this.timeout = timeout;
+        this.count = count;
     }
 
     /**
@@ -60,7 +66,7 @@ export class CryptoChallenge {
     }
 
     generateAnswers(id: string): string[] {
-        const answers: string[] = new Array(10);
+        const answers: string[] = new Array(this.count);
         const prefix = id + this.timestamp + this.nonce;
 
         for (let i = 0; i < answers.length; i++) {
@@ -148,7 +154,8 @@ export class Challenge {
             raw.timestamp,
             raw.nonce,
             raw.difficulty,
-            raw.timeout
+            raw.timeout,
+            raw.count
         );
     }
 }
@@ -172,7 +179,7 @@ export function parseChallengeHTML(src: string): Challenge | null {
     }
 
     // Parse path
-    const pageRegex = new RegExp(`src="(\/_sec\/cp_challenge\/ak-challenge-\\d+-\\d+.htm)"`);
+    const pageRegex = new RegExp('data-duration=\\d+\\s+src="([^"]+)"');
     const pageResult = pageRegex.exec(src);
     if (pageResult == null || pageResult.length < 2) {
         return null;
@@ -190,7 +197,8 @@ export function parseChallengeHTML(src: string): Challenge | null {
             raw.timestamp,
             raw.nonce,
             raw.difficulty,
-            raw.timeout
+            raw.timeout,
+            raw.count,
         );
     }
 
@@ -220,7 +228,8 @@ export function parseChallengeJSON(src: string): Challenge | null {
             raw.timestamp,
             raw.nonce,
             raw.difficulty,
-            raw.timeout
+            raw.timeout,
+            raw.count
         )
     );
 }
