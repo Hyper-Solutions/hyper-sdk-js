@@ -7,15 +7,19 @@ import {Session} from "../index";
 export class Reese84Input {
     readonly userAgent: string;
     readonly site: string;
+    readonly language?: string;
+    readonly ip?: string;
 
     /**
      * Creates a new instance.
      * @param userAgent The user agent to impersonate
      * @param site The site identifier
      */
-    public constructor(userAgent: string, site: string) {
+    public constructor(userAgent: string, site: string, language?: string, ip?: string) {
         this.userAgent = userAgent;
         this.site = site;
+        this.language = language;
+        this.ip = ip;
     }
 }
 

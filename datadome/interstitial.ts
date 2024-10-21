@@ -44,10 +44,16 @@ export class InterstitialInput {
      */
     readonly html: string;
 
-    public constructor(userAgent: string, deviceLink: string, html: string) {
+    readonly ip?: string;
+    readonly language?: string;
+
+    public constructor(userAgent: string, deviceLink: string, html: string, ip?: string, language?: string) {
         this.userAgent = userAgent;
         this.deviceLink = deviceLink;
         this.html = html;
+
+        this.ip = ip;
+        this.language = language;
     }
 }
 

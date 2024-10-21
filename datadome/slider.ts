@@ -91,12 +91,17 @@ export class SliderInput {
      */
     readonly piece: string;
 
-    public constructor(userAgent: string, deviceLink: string, html: string, puzzle: string, piece: string) {
+    readonly ip?: string;
+    readonly language?: string;
+
+    public constructor(userAgent: string, deviceLink: string, html: string, puzzle: string, piece: string,  ip?: string, language?: string) {
         this.userAgent = userAgent;
         this.deviceLink = deviceLink;
         this.html = html;
         this.puzzle = puzzle;
         this.piece = piece;
+        this.ip = ip;
+        this.language = language;
     }
 }
 
