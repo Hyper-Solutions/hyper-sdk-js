@@ -11,8 +11,8 @@ export class TagsInput {
     readonly ddk: string;
     readonly referer: string;
     readonly type: string;
+    readonly ip: string;
     readonly language?: string;
-    readonly ip?: string;
 
     /**
      * Creates a new instance.
@@ -25,14 +25,14 @@ export class TagsInput {
      * @param language The first language of your accept-language header, defaults to "en-US"
      * @param ip The IP that is used to post the sensor data to the target site. You can use /ip to get the IP from a connection. If you are not using proxies, this will be the IPv4 address of your pc.
      */
-    public constructor(userAgent: string, cid: string, ddk: string, referer: string, type: string, language?: string, ip?: string) {
+    public constructor(userAgent: string, cid: string, ddk: string, referer: string, type: string, ip: string, language?: string) {
         this.userAgent = userAgent;
         this.cid = cid;
         this.ddk = ddk;
         this.referer = referer;
         this.type = type;
-        this.language = language;
         this.ip = ip;
+        this.language = language;
     }
 }
 
