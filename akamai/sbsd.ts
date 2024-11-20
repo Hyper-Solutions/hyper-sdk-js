@@ -9,6 +9,7 @@ export class SbsdInput {
     readonly uuid: string;
     readonly pageUrl: string;
     readonly o: string;
+    readonly scriptHash?: string;
     readonly ip?: string;
     readonly language?: string;
 
@@ -19,14 +20,16 @@ export class SbsdInput {
      * @param o_cookie The "sbsd_o" cookie value
      * @param pageUrl The URL of the page
      * @param userAgent The user agent to impersonate
+     * @param scriptHash The SHA-256 checksum of the script content
      * @param ip The IP of the Proxy / Network that will is used to interact with the target site.
      * @param language The language of your browser.
      */
-    public constructor(uuid: string, o_cookie: string, pageUrl: string, userAgent: string, ip?: string, language?: string) {
+    public constructor(uuid: string, o_cookie: string, pageUrl: string, userAgent: string, scriptHash?: string, ip?: string, language?: string) {
         this.uuid = uuid;
         this.pageUrl = pageUrl;
         this.userAgent = userAgent;
         this.o = o_cookie;
+        this.scriptHash = scriptHash;
         this.ip = ip;
         this.language = language;
     }
