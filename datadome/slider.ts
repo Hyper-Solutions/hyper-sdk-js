@@ -1,5 +1,5 @@
 import {parseObject} from "./util";
-import {sendRequest, sendRequestWithHeaders} from "./api";
+import {sendRequestWithHeaders} from "./api";
 import {Session} from "../index";
 
 /**

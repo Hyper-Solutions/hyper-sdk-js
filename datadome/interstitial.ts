@@ -1,6 +1,6 @@
 import {parseObject} from "./util";
 import {Session} from "../index";
-import {sendRequest, sendRequestWithHeaders} from "./api";
+import {sendRequestWithHeaders} from "./api";
 
 /**
  * Parses the device check URL (`/interstitial/?initialCid`...) from a blocked response body.
