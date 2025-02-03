@@ -1,5 +1,5 @@
 import {parseObject} from "./util";
-import {sendRequest} from "./api";
+import {sendRequest, sendRequestWithHeaders} from "./api";
 import {Session} from "../index";
 
 /**
@@ -108,9 +108,9 @@ export class SliderInput {
 /**
  * Generates a DataDome slider payload that can be used to obtain a solved `datadome` cookie.
  * @param session The {@link Session}
- * @param input The {@link SliderInput}
- * @returns {Promise<string>} A {@link Promise} that, when resolved, will contain a slider link
+ * @param input The {@link SliderInput} containing required parameters for slider payload generation
+ * @returns {Promise<{payload: string, headers: {[key: string]: string}}>} A {@link Promise} that resolves to an object containing the slider payload and response headers
  */
-export function generateSliderPayload(session: Session, input: SliderInput): Promise<string> {
-    return sendRequest(session, "https://datadome.justhyped.dev/slider", input);
+export function generateSliderPayload(session: Session, input: SliderInput): Promise<{ payload: string, headers: { [key: string]: string } }> {
+    return sendRequestWithHeaders(session, "https://datadome.justhyped.dev/slider", input);
 }

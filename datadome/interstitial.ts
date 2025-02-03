@@ -1,6 +1,6 @@
 import {parseObject} from "./util";
 import {Session} from "../index";
-import {sendRequest} from "./api";
+import {sendRequest, sendRequestWithHeaders} from "./api";
 
 /**
  * Parses the device check URL (`/interstitial/?initialCid`...) from a blocked response body.
@@ -60,9 +60,9 @@ export class InterstitialInput {
 /**
  * Generates a DataDome interstitial payload that can be used to obtain a solved `datadome` cookie.
  * @param session The {@link Session}
- * @param input The {@link InterstitialInput}
- * @returns {Promise<string>} A {@link Promise} that, when resolved, will contain a interstitial payload
+ * @param input The {@link InterstitialInput} containing required parameters for interstitial payload generation
+ * @returns {Promise<{payload: string, headers: {[key: string]: string}}>} A {@link Promise} that resolves to an object containing the interstitial payload and response headers
  */
-export function generateInterstitialPayload(session: Session, input: InterstitialInput): Promise<string> {
-    return sendRequest(session, "https://datadome.justhyped.dev/interstitial", input);
+export function generateInterstitialPayload(session: Session, input: InterstitialInput): Promise<{ payload: string, headers: { [key: string]: string } }> {
+    return sendRequestWithHeaders(session, "https://datadome.justhyped.dev/interstitial", input);
 }
