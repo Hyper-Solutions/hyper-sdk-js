@@ -9,20 +9,23 @@ export class KasadaPayloadInput {
     readonly userAgent: string;
     readonly ipsLink: string;
     readonly script: string;
-    readonly language?: string;
+    readonly language: string;
+    readonly ip: string;
 
     /**
      * Creates a new instance.
      * @param userAgent The user agent to impersonate
      * @param ipsLink The ips.js script link, parsed from the block page (429 status code)
      * @param script The ips.js script retrieved using the IpsLink url
-     * @param language The first language of your accept-language header, it defaults to "en-US" if left empty.
+     * @param language The first language of your accept-language header.
+     * @param ip The IPV4 address of your network or proxy.
      */
-    public constructor(userAgent: string, ipsLink: string, script: string, language?: string) {
+    public constructor(userAgent: string, ipsLink: string, script: string, language: string, ip: string) {
         this.userAgent = userAgent;
         this.ipsLink = ipsLink;
         this.script = script;
         this.language = language;
+        this.ip = ip;
     }
 }
 
