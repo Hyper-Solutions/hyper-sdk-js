@@ -12,7 +12,7 @@ export class TagsInput {
     readonly referer: string;
     readonly type: string;
     readonly ip: string;
-    readonly language?: string;
+    readonly language: string;
 
     /**
      * Creates a new instance.
@@ -22,10 +22,10 @@ export class TagsInput {
      * @param ddk sitekey, static for each site. parse it from the /js/ payload request from browser
      * @param referer The referer visible as the referer header in the payload POST
      * @param type First time 'ch', second time 'le'
-     * @param language The first language of your accept-language header, defaults to "en-US"
-     * @param ip The IP that is used to post the sensor data to the target site. You can use /ip to get the IP from a connection. If you are not using proxies, this will be the IPv4 address of your pc.
+     * @param ip The IPV4 address of your network or proxy.
+     * @param language The first language of your accept-language header.
      */
-    public constructor(userAgent: string, cid: string, ddk: string, referer: string, type: string, ip: string, language?: string) {
+    public constructor(userAgent: string, cid: string, ddk: string, referer: string, type: string, ip: string, language: string) {
         this.userAgent = userAgent;
         this.cid = cid;
         this.ddk = ddk;

@@ -7,19 +7,21 @@ import {Session} from "../index";
 export class Reese84Input {
     readonly userAgent: string;
     readonly site: string;
-    readonly language?: string;
-    readonly ip?: string;
+    readonly ip: string;
+    readonly language: string;
 
     /**
      * Creates a new instance.
      * @param userAgent The user agent to impersonate
      * @param site The site identifier
+     * @param ip The IPV4 address of your network or proxy.
+     * @param language The first language of your accept-language header.
      */
-    public constructor(userAgent: string, site: string, language?: string, ip?: string) {
+    public constructor(userAgent: string, site: string, ip: string, language: string) {
         this.userAgent = userAgent;
         this.site = site;
-        this.language = language;
         this.ip = ip;
+        this.language = language;
     }
 }
 

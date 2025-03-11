@@ -94,17 +94,23 @@ export class PixelInput {
     readonly userAgent: string;
     readonly htmlVar: string;
     readonly scriptVar: string;
+    readonly ip: string;
+    readonly language: string;
 
     /**
      * Creates a new instance.
      * @param userAgent The user agent to impersonate
      * @param htmlVar The HTML var, obtained from {@link parsePixelHtmlVar}
      * @param scriptVar The script var, obtained from {@link parsePixelScriptVar}
+     * @param ip The IPV4 address of your network or proxy.
+     * @param language The first language of your accept-language header.
      */
-    public constructor(userAgent: string, htmlVar: string, scriptVar: string) {
+    public constructor(userAgent: string, htmlVar: string, scriptVar: string, ip: string, language: string) {
         this.userAgent = userAgent;
         this.htmlVar = htmlVar;
         this.scriptVar = scriptVar;
+        this.ip = ip;
+        this.language = language;
     }
 }
 

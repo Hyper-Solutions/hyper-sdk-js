@@ -60,41 +60,30 @@ export function parseSliderDeviceCheckUrl(body: string, cookie: string, referer:
  * Slider API input.
  */
 export class SliderInput {
-    /**
-     * The browser user agent to impersonate.
-     */
     readonly userAgent: string;
-
-    /**
-     * The device check URL obtained from {@link parseSliderDeviceCheckUrl}.
-     */
     readonly deviceLink: string;
-
-    /**
-     * The response body obtained from doing a GET request to the device check URL.
-     */
     readonly html: string;
-
-    /**
-     * The captcha puzzle image bytes, base64 encoded.
-     *
-     * The URL that returns the puzzle image looks like this:
-     * `https://dd.prod.captcha-delivery.com/image/2024-xx-xx/hash.jpg`
-     */
     readonly puzzle: string;
-
-    /**
-     * The captcha puzzle piece image bytes, base64 encoded.
-     *
-     * The URL that returns the puzzle piece image looks like this:
-     * `https://dd.prod.captcha-delivery.com/image/2024-xx-xx/hash.frag.png`
-     */
     readonly piece: string;
-
     readonly parentUrl: string;
     readonly ip: string;
     readonly language: string;
 
+    /**
+     * Creates a new SliderInput instance.
+     * @param userAgent The browser user agent to impersonate.
+     * @param deviceLink The device check URL obtained from {@link parseSliderDeviceCheckUrl}.
+     * @param html The response body obtained from doing a GET request to the device check URL.
+     * @param puzzle The captcha puzzle image bytes, base64 encoded.
+     *               The URL that returns the puzzle image looks like this:
+     *               `https://dd.prod.captcha-delivery.com/image/2024-xx-xx/hash.jpg`
+     * @param piece The captcha puzzle piece image bytes, base64 encoded.
+     *              The URL that returns the puzzle piece image looks like this:
+     *              `https://dd.prod.captcha-delivery.com/image/2024-xx-xx/hash.frag.png`
+     * @param parentUrl The parent URL.
+     * @param ip The IPV4 address of your network or proxy.
+     * @param language The first language of your accept-language header.
+     */
     public constructor(userAgent: string, deviceLink: string, html: string, puzzle: string, piece: string, parentUrl: string, ip: string, language: string) {
         this.userAgent = userAgent;
         this.deviceLink = deviceLink;

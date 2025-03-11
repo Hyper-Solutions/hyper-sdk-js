@@ -10,25 +10,25 @@ export class SensorInput {
     readonly version: string;
     readonly pageUrl: string;
     readonly userAgent: string;
+    readonly ip: string;
+    readonly language: string;
     readonly scriptHash?: string;
-    readonly ip?: string;
-    readonly language?: string;
     readonly dynamicValues?: string;
 
     /**
      * Creates a new instance.
-     * Refer to the {@link https://docs.justhyped.dev/akamai-web/api-reference|documentation} for more information.
-     * @param abck The current `_abck` cookie
-     * @param bmsz The current `bm_sz` cookie
-     * @param version The Akamai web SDK version
-     * @param pageUrl The URL of the page
-     * @param userAgent The user agent to impersonate
-     * @param scriptHash The hash of the script. This is an optional parameter that allows callers to
-     * @param language The first language of your accept-language header, defaults to "en-US"
-     * @param ip The IP that is used to post the sensor data to the target site. You can use /ip to get the IP from a connection. If you are not using proxies, this will be the IPv4 address of your pc.
+     * Refer to the {@link https://docs.justhyped.dev/api-reference/akamai|documentation} for more information.
+     * @param abck The current `_abck` cookie.
+     * @param bmsz The current `bm_sz` cookie.
+     * @param version The Akamai web SDK version.
+     * @param pageUrl The URL of the page.
+     * @param userAgent The user agent to impersonate.
+     * @param ip The IPV4 address of your network or proxy.
+     * @param language The first language of your accept-language header.
+     * @param scriptHash The hash of the script, optional.
      * @param dynamicValues The dynamic values required for v3 dynamic version.
      */
-    public constructor(abck: string, bmsz: string, version: string, pageUrl: string, userAgent: string, scriptHash?: string, ip?: string, language?: string, dynamicValues?: string) {
+    public constructor(abck: string, bmsz: string, version: string, pageUrl: string, userAgent: string, ip: string, language: string, scriptHash?: string, dynamicValues?: string) {
         this.abck = abck;
         this.bmsz = bmsz;
         this.version = version;

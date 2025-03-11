@@ -21,8 +21,8 @@ export class SbsdInput {
      * @param pageUrl The URL of the page
      * @param userAgent The user agent to impersonate
      * @param script The script content
-     * @param ip The IP of the Proxy / Network that will is used to interact with the target site.
-     * @param language The language of your browser.
+     * @param ip The IPV4 address of your network or proxy.
+     * @param language The first language of your accept-language header.
      */
     public constructor(uuid: string, o_cookie: string, pageUrl: string, userAgent: string, script: string, ip: string, language: string) {
         this.uuid = uuid;

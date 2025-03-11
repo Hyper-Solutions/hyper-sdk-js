@@ -29,29 +29,24 @@ export function parseInterstitialDeviceCheckUrl(body: string, cookie: string, re
  * Interstitial API input.
  */
 export class InterstitialInput {
-    /**
-     * The browser user agent to impersonate.
-     */
     readonly userAgent: string;
-
-    /**
-     * The device check URL obtained from {@link parseInterstitialDeviceCheckUrl}.
-     */
     readonly deviceLink: string;
+    readonly html: string;
+    readonly ip: string;
+    readonly language: string;
 
     /**
-     * The response body obtained from doing a GET request to the device check URL.
+     * Creates a new InterstitialInput instance.
+     * @param userAgent The browser user agent to impersonate.
+     * @param deviceLink The device check URL obtained from {@link parseInterstitialDeviceCheckUrl}.
+     * @param html The response body obtained from doing a GET request to the device check URL.
+     * @param ip The IPV4 address of your network or proxy.
+     * @param language The first language of your accept-language header.
      */
-    readonly html: string;
-
-    readonly ip: string;
-    readonly language?: string;
-
-    public constructor(userAgent: string, deviceLink: string, html: string, ip: string, language?: string) {
+    public constructor(userAgent: string, deviceLink: string, html: string, ip: string, language: string) {
         this.userAgent = userAgent;
         this.deviceLink = deviceLink;
         this.html = html;
-
         this.ip = ip;
         this.language = language;
     }
