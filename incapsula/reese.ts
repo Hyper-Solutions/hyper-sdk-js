@@ -9,6 +9,7 @@ export class Reese84Input {
     readonly site: string;
     readonly ip: string;
     readonly language: string;
+    readonly scriptUrl?: string;
 
     /**
      * Creates a new instance.
@@ -16,12 +17,14 @@ export class Reese84Input {
      * @param site The site identifier
      * @param ip The IPV4 address of your network or proxy.
      * @param language The first language of your accept-language header.
+     * @param scriptUrl Important when solving reese on Pardon Our Interruption page
      */
-    public constructor(userAgent: string, site: string, ip: string, language: string) {
+    public constructor(userAgent: string, site: string, ip: string, language: string, scriptUrl?: string) {
         this.userAgent = userAgent;
         this.site = site;
         this.ip = ip;
         this.language = language;
+        this.scriptUrl = scriptUrl;
     }
 }
 
