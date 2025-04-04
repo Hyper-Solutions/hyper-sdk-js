@@ -11,7 +11,7 @@ export class SensorInput {
     readonly pageUrl: string;
     readonly userAgent: string;
     readonly ip: string;
-    readonly language: string;
+    readonly acceptLanguage: string;
     readonly scriptHash?: string;
     readonly dynamicValues?: string;
 
@@ -24,11 +24,11 @@ export class SensorInput {
      * @param pageUrl The URL of the page.
      * @param userAgent The user agent to impersonate.
      * @param ip The IPV4 address of your network or proxy.
-     * @param language The first language of your accept-language header.
+     * @param acceptLanguage Your accept-language header.
      * @param scriptHash The hash of the script, optional.
      * @param dynamicValues The dynamic values required for v3 dynamic version.
      */
-    public constructor(abck: string, bmsz: string, version: string, pageUrl: string, userAgent: string, ip: string, language: string, scriptHash?: string, dynamicValues?: string) {
+    public constructor(abck: string, bmsz: string, version: string, pageUrl: string, userAgent: string, ip: string, acceptLanguage: string, scriptHash?: string, dynamicValues?: string) {
         this.abck = abck;
         this.bmsz = bmsz;
         this.version = version;
@@ -36,7 +36,7 @@ export class SensorInput {
         this.userAgent = userAgent;
         this.scriptHash = scriptHash;
         this.ip = ip;
-        this.language = language;
+        this.acceptLanguage = acceptLanguage;
         this.dynamicValues = dynamicValues;
     }
 }

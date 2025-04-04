@@ -67,7 +67,7 @@ export class SliderInput {
     readonly piece: string;
     readonly parentUrl: string;
     readonly ip: string;
-    readonly language: string;
+    readonly acceptLanguage: string;
 
     /**
      * Creates a new SliderInput instance.
@@ -82,9 +82,9 @@ export class SliderInput {
      *              `https://dd.prod.captcha-delivery.com/image/2024-xx-xx/hash.frag.png`
      * @param parentUrl The parent URL.
      * @param ip The IPV4 address of your network or proxy.
-     * @param language The first language of your accept-language header.
+     * @param acceptLanguage Your accept-language header.
      */
-    public constructor(userAgent: string, deviceLink: string, html: string, puzzle: string, piece: string, parentUrl: string, ip: string, language: string) {
+    public constructor(userAgent: string, deviceLink: string, html: string, puzzle: string, piece: string, parentUrl: string, ip: string, acceptLanguage: string) {
         this.userAgent = userAgent;
         this.deviceLink = deviceLink;
         this.html = html;
@@ -92,7 +92,7 @@ export class SliderInput {
         this.piece = piece;
         this.parentUrl = parentUrl;
         this.ip = ip;
-        this.language = language;
+        this.acceptLanguage = acceptLanguage;
     }
 }
 

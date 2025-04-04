@@ -95,7 +95,7 @@ export class PixelInput {
     readonly htmlVar: string;
     readonly scriptVar: string;
     readonly ip: string;
-    readonly language: string;
+    readonly acceptLanguage: string;
 
     /**
      * Creates a new instance.
@@ -103,14 +103,14 @@ export class PixelInput {
      * @param htmlVar The HTML var, obtained from {@link parsePixelHtmlVar}
      * @param scriptVar The script var, obtained from {@link parsePixelScriptVar}
      * @param ip The IPV4 address of your network or proxy.
-     * @param language The first language of your accept-language header.
+     * @param acceptLanguage Your accept-language header.
      */
-    public constructor(userAgent: string, htmlVar: string, scriptVar: string, ip: string, language: string) {
+    public constructor(userAgent: string, htmlVar: string, scriptVar: string, ip: string, acceptLanguage: string) {
         this.userAgent = userAgent;
         this.htmlVar = htmlVar;
         this.scriptVar = scriptVar;
         this.ip = ip;
-        this.language = language;
+        this.acceptLanguage = acceptLanguage;
     }
 }
 

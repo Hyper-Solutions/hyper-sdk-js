@@ -9,7 +9,7 @@ export class KasadaPayloadInput {
     readonly userAgent: string;
     readonly ipsLink: string;
     readonly script: string;
-    readonly language: string;
+    readonly acceptLanguage: string;
     readonly ip: string;
 
     /**
@@ -18,14 +18,14 @@ export class KasadaPayloadInput {
      * @param ipsLink The ips.js script link, parsed from the block page (429 status code)
      * @param script The ips.js script retrieved using the IpsLink url
      * @param ip The IPV4 address of your network or proxy.
-     * @param language The first language of your accept-language header.
+     * @param acceptLanguage Your accept-language header.
      */
-    public constructor(userAgent: string, ipsLink: string, script: string, ip: string, language: string) {
+    public constructor(userAgent: string, ipsLink: string, script: string, ip: string, acceptLanguage: string) {
         this.userAgent = userAgent;
         this.ipsLink = ipsLink;
         this.script = script;
         this.ip = ip;
-        this.language = language;
+        this.acceptLanguage = acceptLanguage;
     }
 }
 

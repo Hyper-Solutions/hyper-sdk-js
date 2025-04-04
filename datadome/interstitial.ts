@@ -33,7 +33,7 @@ export class InterstitialInput {
     readonly deviceLink: string;
     readonly html: string;
     readonly ip: string;
-    readonly language: string;
+    readonly acceptLanguage: string;
 
     /**
      * Creates a new InterstitialInput instance.
@@ -41,14 +41,14 @@ export class InterstitialInput {
      * @param deviceLink The device check URL obtained from {@link parseInterstitialDeviceCheckUrl}.
      * @param html The response body obtained from doing a GET request to the device check URL.
      * @param ip The IPV4 address of your network or proxy.
-     * @param language The first language of your accept-language header.
+     * @param acceptLanguage Your accept-language header.
      */
-    public constructor(userAgent: string, deviceLink: string, html: string, ip: string, language: string) {
+    public constructor(userAgent: string, deviceLink: string, html: string, ip: string, acceptLanguage: string) {
         this.userAgent = userAgent;
         this.deviceLink = deviceLink;
         this.html = html;
         this.ip = ip;
-        this.language = language;
+        this.acceptLanguage = acceptLanguage;
     }
 }
 

@@ -11,7 +11,7 @@ export class SbsdInput {
     readonly o: string;
     readonly script: string;
     readonly ip: string;
-    readonly language: string;
+    readonly acceptLanguage: string;
 
     /**
      * Creates a new instance.
@@ -22,16 +22,16 @@ export class SbsdInput {
      * @param userAgent The user agent to impersonate
      * @param script The script content
      * @param ip The IPV4 address of your network or proxy.
-     * @param language The first language of your accept-language header.
+     * @param acceptLanguage Your accept-language header.
      */
-    public constructor(uuid: string, o_cookie: string, pageUrl: string, userAgent: string, script: string, ip: string, language: string) {
+    public constructor(uuid: string, o_cookie: string, pageUrl: string, userAgent: string, script: string, ip: string, acceptLanguage: string) {
         this.uuid = uuid;
         this.pageUrl = pageUrl;
         this.userAgent = userAgent;
         this.o = o_cookie;
         this.script = script;
         this.ip = ip;
-        this.language = language;
+        this.acceptLanguage = acceptLanguage;
     }
 }
 
