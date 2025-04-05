@@ -20,7 +20,8 @@ export function parseInterstitialDeviceCheckUrl(body: string, cookie: string, re
         cid: cookie,
         referer,
         s: dd.hasOwnProperty("s") ? dd.s.toString() : "0",
-        b: dd.hasOwnProperty("b") ? dd.b.toString() : "0"
+        b: dd.hasOwnProperty("b") ? dd.b.toString() : "0",
+        dm: "cd"
     };
     return "https://geo.captcha-delivery.com/interstitial/?" + new URLSearchParams(params).toString();
 }
