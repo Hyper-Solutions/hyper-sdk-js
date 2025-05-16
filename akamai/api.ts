@@ -5,11 +5,16 @@ import {IHeaders} from "typed-rest-client/Interfaces";
 /**
  * API response schema.
  */
-interface IApiResponse {
+export interface IApiResponse {
     /**
      * The payload.
      */
     payload?: string;
+
+    /**
+     * The context
+     */
+    context?: string;
 
     /**
      * Error message.

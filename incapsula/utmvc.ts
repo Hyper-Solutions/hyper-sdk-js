@@ -1,6 +1,8 @@
 import assert from "assert";
 import {Session} from "../index";
-import {sendRequest} from "./api";
+import {IApiResponse, InvalidApiResponseError, sendRequest} from "./api";
+import * as rm from "typed-rest-client/RestClient";
+import {IHeaders} from "typed-rest-client/Interfaces";
 
 const scriptRegex = new RegExp(`src="(/_Incapsula_Resource\?[^"]*)"`);
 
@@ -96,6 +98,41 @@ export class UtmvcInput {
  * @param input The {@link UtmvcInput}
  * @returns {Promise<string>} A {@link Promise} that, when resolved, will contain a `___utmvc` cookie
  */
-export async function generateUtmvcCookie(session: Session, input: UtmvcInput): Promise<string> {
-    return sendRequest(session, "https://incapsula.justhyped.dev/utmvc", input);
+export async function generateUtmvcCookie(session: Session, input: UtmvcInput): Promise<{payload: string, swhanedl: string}> {
+    // Create request headers
+    const headers: IHeaders = {
+        "Content-Type": "application/json",
+        "X-Api-Key": session.apiKey
+    };
+    if (session.jwtKey != undefined && session.jwtKey.length > 0) {
+        headers["X-Signature"] = session.generateSignature();
+    }
+
+    // Execute request
+    const response: rm.IRestResponse<IApiResponse> = await session.client.create("https://incapsula.justhyped.dev/utmvc", input, {
+        acceptHeader: "application/json",
+        additionalHeaders: headers
+    });
+
+    // Validate response and return
+    if (response.statusCode != 200) {
+        throw new InvalidApiResponseError("Bad HTTP status code " + response.statusCode);
+    }
+    if (response.result == null) {
+        throw new InvalidApiResponseError("Invalid API response");
+    }
+    if (response.result.error != undefined) {
+        throw new InvalidApiResponseError(response.result.error);
+    }
+    if (response.result.payload == undefined) {
+        throw new InvalidApiResponseError("No payload obtained from API");
+    }
+    if (response.result.swhanedl == undefined) {
+        throw new InvalidApiResponseError("No swhanedl obtained from API");
+    }
+
+    return {
+        payload: response.result.payload,
+        swhanedl: response.result.swhanedl
+    };
 }

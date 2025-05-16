@@ -5,11 +5,16 @@ import {IHeaders} from "typed-rest-client/Interfaces";
 /**
  * API response schema.
  */
-interface IApiResponse {
+export interface IApiResponse {
     /**
      * The payload.
      */
     payload?: string;
+
+    /**
+     * Only used for UTMVC
+     */
+    swhanedl?: string;
 
     /**
      * The error message.
