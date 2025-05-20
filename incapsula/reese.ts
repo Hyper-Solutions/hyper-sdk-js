@@ -9,6 +9,7 @@ export class Reese84Input {
     readonly site: string;
     readonly ip: string;
     readonly acceptLanguage: string;
+    readonly pageUrl: string;
     readonly scriptUrl?: string;
 
     /**
@@ -16,14 +17,16 @@ export class Reese84Input {
      * @param userAgent The user agent to impersonate
      * @param site The site identifier
      * @param ip The IPV4 address of your network or proxy.
+     * @param pageUrl The page url.
      * @param acceptLanguage Your accept-language header.
      * @param scriptUrl Important when solving reese on Pardon Our Interruption page
      */
-    public constructor(userAgent: string, site: string, ip: string, acceptLanguage: string, scriptUrl?: string) {
+    public constructor(userAgent: string, site: string, ip: string, acceptLanguage: string, pageUrl: string, scriptUrl?: string) {
         this.userAgent = userAgent;
         this.site = site;
         this.ip = ip;
         this.acceptLanguage = acceptLanguage;
+        this.pageUrl = pageUrl;
         this.scriptUrl = scriptUrl;
     }
 }
