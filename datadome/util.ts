@@ -6,7 +6,7 @@
  */
 export function parseObject(body: string): any | null {
     let result = /var\s+dd\s*=\s*(\{\s*([\s\S]*?)\s*})/.exec(body);
-    if (result == null || result.length < 2) {
+    if (result == null || result.length < 2 || result[1] == null) {
         return null;
     }
 
