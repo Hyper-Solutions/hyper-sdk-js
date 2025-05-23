@@ -1,5 +1,5 @@
 import {Session} from "../index";
-import {IApiResponse, InvalidApiResponseError, sendRequest} from "./api";
+import {IApiResponse, InvalidApiResponseError} from "./api";
 import {IHeaders} from "typed-rest-client/Interfaces";
 import * as rm from "typed-rest-client";
 
