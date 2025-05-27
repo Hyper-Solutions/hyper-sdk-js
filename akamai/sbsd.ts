@@ -42,5 +42,5 @@ export class SbsdInput {
  * @returns {Promise<string>} A {@link Promise} that, when resolved, will contain sbsd sensor data
  */
 export async function generateSbsdPayload(session: Session, input: SbsdInput): Promise<string> {
-    return sendRequest(session, "https://akm.justhyped.dev/sbsd", input);
+    return sendRequest(session, "https://akm.hypersolutions.co/sbsd", input);
 }

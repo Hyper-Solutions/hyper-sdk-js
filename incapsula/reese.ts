@@ -38,5 +38,5 @@ export class Reese84Input {
  * @returns {Promise<string>} A {@link Promise} that, when resolved, will contain a reese84 sensor
  */
 export async function generateReese84Sensor(session: Session, input: Reese84Input): Promise<string> {
-    return sendRequest(session, "https://incapsula.justhyped.dev/reese84/" + input.site, input);
+    return sendRequest(session, "https://incapsula.hypersolutions.co/reese84/" + input.site, input);
 }

@@ -62,7 +62,7 @@ export async function generateSensorData(session: Session, input: SensorInput): 
     }
 
     // Execute request
-    const response: rm.IRestResponse<IApiResponse> = await session.client.create("https://akm.justhyped.dev/v2/sensor", input, {
+    const response: rm.IRestResponse<IApiResponse> = await session.client.create("https://akm.hypersolutions.co/v2/sensor", input, {
         acceptHeader: "application/json",
         additionalHeaders: headers
     });

@@ -43,5 +43,5 @@ export class TagsInput {
  * @returns {Promise<string>} A {@link Promise} that, when resolved, will contain a tags payload
  */
 export function generateTagsPayload(session: Session, input: TagsInput): Promise<string> {
-    return sendRequest(session, "https://datadome.justhyped.dev/tags", input);
+    return sendRequest(session, "https://datadome.hypersolutions.co/tags", input);
 }

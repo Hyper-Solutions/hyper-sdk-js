@@ -109,7 +109,7 @@ export async function generateUtmvcCookie(session: Session, input: UtmvcInput): 
     }
 
     // Execute request
-    const response: rm.IRestResponse<IApiResponse> = await session.client.create("https://incapsula.justhyped.dev/utmvc", input, {
+    const response: rm.IRestResponse<IApiResponse> = await session.client.create("https://incapsula.hypersolutions.co/utmvc", input, {
         acceptHeader: "application/json",
         additionalHeaders: headers
     });

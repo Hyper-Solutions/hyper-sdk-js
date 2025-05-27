@@ -120,5 +120,5 @@ export class PixelInput {
  * @param input The {@link PixelInput}
  */
 export async function generatePixelData(session: Session, input: PixelInput): Promise<string> {
-    return sendRequest(session, "https://akm.justhyped.dev/pixel", input);
+    return sendRequest(session, "https://akm.hypersolutions.co/pixel", input);
 }

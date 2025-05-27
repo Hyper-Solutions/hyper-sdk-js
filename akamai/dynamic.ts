@@ -24,5 +24,5 @@ export class V3DynamicInput {
  * @returns {Promise<string>} A {@link Promise} that, when resolved, will contain the dynamic values
  */
 export async function parseV3DynamicValues(session: Session, input: V3DynamicInput): Promise<string> {
-    return sendRequest(session, "https://akm.justhyped.dev/v3dynamic", input);
+    return sendRequest(session, "https://akm.hypersolutions.co/v3dynamic", input);
 }

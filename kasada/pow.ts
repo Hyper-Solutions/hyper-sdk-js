@@ -43,7 +43,7 @@ export class KasadaPowInput {
  * @returns {Promise<string>} A {@link Promise} that, when resolved, will contain the x-kpsdk-cd token.
  */
 export async function generateKasadaPow(session: Session, input: KasadaPowInput): Promise<string> {
-    return sendRequest(session, "https://kasada.justhyped.dev/cd", input);
+    return sendRequest(session, "https://kasada.hypersolutions.co/cd", input);
 }
 
 

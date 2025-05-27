@@ -103,5 +103,5 @@ export class SliderInput {
  * @returns {Promise<{payload: string, headers: {[key: string]: string}}>} A {@link Promise} that resolves to an object containing the slider payload and response headers
  */
 export function generateSliderPayload(session: Session, input: SliderInput): Promise<{ payload: string, headers: { [key: string]: string } }> {
-    return sendRequestWithHeaders(session, "https://datadome.justhyped.dev/slider", input);
+    return sendRequestWithHeaders(session, "https://datadome.hypersolutions.co/slider", input);
 }

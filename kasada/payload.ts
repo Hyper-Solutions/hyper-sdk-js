@@ -103,7 +103,7 @@ export async function generateKasadaPayload(session: Session, input: KasadaPaylo
     }
 
     // Execute request
-    const response: rm.IRestResponse<IApiResponse> = await session.client.create("https://kasada.justhyped.dev/payload", input, {
+    const response: rm.IRestResponse<IApiResponse> = await session.client.create("https://kasada.hypersolutions.co/payload", input, {
         acceptHeader: "application/json",
         additionalHeaders: headers
     });
