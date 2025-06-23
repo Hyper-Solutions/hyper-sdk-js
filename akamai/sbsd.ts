@@ -5,6 +5,7 @@ import {sendRequest} from "./api";
  * Sbsd input.
  */
 export class SbsdInput {
+    readonly index: number;
     readonly userAgent: string;
     readonly uuid: string;
     readonly pageUrl: string;
@@ -24,7 +25,8 @@ export class SbsdInput {
      * @param ip The IPV4 address of your network or proxy.
      * @param acceptLanguage Your accept-language header.
      */
-    public constructor(uuid: string, o_cookie: string, pageUrl: string, userAgent: string, script: string, ip: string, acceptLanguage: string) {
+    public constructor(index: number, uuid: string, o_cookie: string, pageUrl: string, userAgent: string, script: string, ip: string, acceptLanguage: string) {
+        this.index = index;
         this.uuid = uuid;
         this.pageUrl = pageUrl;
         this.userAgent = userAgent;
