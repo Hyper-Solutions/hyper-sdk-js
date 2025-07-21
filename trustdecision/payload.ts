@@ -1,4 +1,4 @@
-import {Session} from "../index";
+import {generateSignature, Session} from "../index";
 import {IApiResponse, InvalidApiResponseError} from "./api";
 import {IHeaders} from "typed-rest-client/Interfaces";
 import * as rm from "typed-rest-client";
@@ -47,7 +47,11 @@ export async function generateTrustDecisionPayload(session: Session, input: Payl
         "x-api-key": session.apiKey
     };
     if (session.jwtKey != undefined && session.jwtKey.length > 0) {
-        headers["x-signature"] = session.generateSignature();
+        headers["x-signature"] = generateSignature(session.apiKey, session.jwtKey);
+    }
+    if (session.appKey != undefined && session.appKey.length > 0 && session.appSecret != undefined && session.appSecret.length > 0) {
+        headers["x-app-signature"] = generateSignature(session.appKey, session.appSecret);
+        headers["x-app-key"] = session.appKey;
     }
 
     // Execute request
