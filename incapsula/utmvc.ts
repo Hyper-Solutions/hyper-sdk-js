@@ -98,7 +98,7 @@ export class UtmvcInput {
  * @param input The {@link UtmvcInput}
  * @returns {Promise<string>} A {@link Promise} that, when resolved, will contain a `___utmvc` cookie
  */
-export async function generateUtmvcCookie(session: Session, input: UtmvcInput): Promise<{payload: string, swhanedl: string}> {
+export async function generateUtmvcCookie(session: Session, input: UtmvcInput): Promise<{payload: string, swhanedl: string | undefined}> {
     // Create request headers
     const headers: IHeaders = {
         "Content-Type": "application/json",
@@ -130,9 +130,6 @@ export async function generateUtmvcCookie(session: Session, input: UtmvcInput): 
     }
     if (response.result.payload == undefined) {
         throw new InvalidApiResponseError("No payload obtained from API");
-    }
-    if (response.result.swhanedl == undefined) {
-        throw new InvalidApiResponseError("No swhanedl obtained from API");
     }
 
     return {
