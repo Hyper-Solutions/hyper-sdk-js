@@ -14,6 +14,35 @@ export class InvalidApiKeyError extends Error {}
 export class NoJwtKeyError extends Error {}
 
 /**
+ * Generates the value used for the `X-Signature` API request header.
+ *
+ * @param apiKey The API key to include in the signature
+ * @param jwtKey The JWT key used to sign the payload
+ * @returns The generated JWT signature string
+ * @throws {Error} If apiKey or jwtKey is empty or undefined
+ */
+export function generateSignature(apiKey: string, jwtKey: string): string {
+    if (!apiKey || apiKey.length === 0) {
+        throw new Error("API key is required");
+    }
+
+    if (!jwtKey || jwtKey.length === 0) {
+        throw new Error("JWT key is required");
+    }
+
+    return sign(
+        {
+            "key": apiKey,
+            "exp": Math.floor(Date.now() / 1000) + 60 // 60 seconds
+        },
+        jwtKey,
+        {
+            algorithm: "HS256"
+        }
+    );
+}
+
+/**
  * A session that can be used to interact with the Hyper Solutions API services.
  */
 export class Session {
@@ -27,43 +56,35 @@ export class Session {
      */
     public readonly jwtKey?: string;
 
+    /**
+     * The optional application key.
+     */
+    public readonly appKey?: string;
+
+    /**
+     * The optional application secret.
+     */
+    public readonly appSecret?: string;
+
     readonly client: rm.RestClient;
 
     /**
      * Creates a new session.
      * @param apiKey Your Hyper Solutions API key
      * @param jwtKey Your JWT key. This is only required if you wish to utilize request signing to prevent replay attacks.
+     * @param appKey Optional application key
+     * @param appSecret Optional application secret
      * @param requestOptions Request options for the internal HTTP client
      */
-    public constructor(apiKey: string, jwtKey?: string, requestOptions?: IRequestOptions) {
+    public constructor(apiKey: string, jwtKey?: string, appKey?: string, appSecret?: string, requestOptions?: IRequestOptions) {
         if (apiKey.length == 0) {
             throw new InvalidApiKeyError();
         }
 
         this.apiKey = apiKey;
         this.jwtKey = jwtKey;
+        this.appKey = appKey;
+        this.appSecret = appSecret;
         this.client = new rm.RestClient("Hyper Solutions TypeScript SDK", undefined, undefined, requestOptions);
-    }
-
-    /**
-     * Generates the value used for the `X-Signature` API request header.
-     *
-     * The signature is automatically added if `jwtKey` is set.
-     */
-    public generateSignature(): string {
-        if (this.jwtKey == undefined || this.jwtKey.length == 0) {
-            throw new NoJwtKeyError();
-        }
-
-        return sign(
-            {
-                "key": this.apiKey,
-                "exp": Math.floor(Date.now() / 1000) + 60 // 60 seconds
-            },
-            this.jwtKey,
-            {
-                algorithm: "HS256"
-            }
-        );
     }
 }

@@ -13,6 +13,7 @@ export class TagsInput {
     readonly type: string;
     readonly ip: string;
     readonly acceptLanguage: string;
+    readonly version?: string;
 
     /**
      * Creates a new instance.
@@ -24,8 +25,9 @@ export class TagsInput {
      * @param type First time 'ch', second time 'le'
      * @param ip The IPV4 address of your network or proxy.
      * @param acceptLanguage Your accept-language header.
+     * @param version Optional version string
      */
-    public constructor(userAgent: string, cid: string, ddk: string, referer: string, type: string, ip: string, acceptLanguage: string) {
+    public constructor(userAgent: string, cid: string, ddk: string, referer: string, type: string, ip: string, acceptLanguage: string, version?: string) {
         this.userAgent = userAgent;
         this.cid = cid;
         this.ddk = ddk;
@@ -33,6 +35,7 @@ export class TagsInput {
         this.type = type;
         this.ip = ip;
         this.acceptLanguage = acceptLanguage;
+        this.version = version;
     }
 }
 

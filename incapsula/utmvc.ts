@@ -1,5 +1,5 @@
 import assert from "assert";
-import {Session} from "../index";
+import {generateSignature, Session} from "../index";
 import {IApiResponse, InvalidApiResponseError, sendRequest} from "./api";
 import * as rm from "typed-rest-client/RestClient";
 import {IHeaders} from "typed-rest-client/Interfaces";
@@ -98,14 +98,18 @@ export class UtmvcInput {
  * @param input The {@link UtmvcInput}
  * @returns {Promise<string>} A {@link Promise} that, when resolved, will contain a `___utmvc` cookie
  */
-export async function generateUtmvcCookie(session: Session, input: UtmvcInput): Promise<{payload: string, swhanedl: string}> {
+export async function generateUtmvcCookie(session: Session, input: UtmvcInput): Promise<{payload: string, swhanedl: string | undefined}> {
     // Create request headers
     const headers: IHeaders = {
         "Content-Type": "application/json",
         "X-Api-Key": session.apiKey
     };
     if (session.jwtKey != undefined && session.jwtKey.length > 0) {
-        headers["X-Signature"] = session.generateSignature();
+        headers["X-Signature"] = generateSignature(session.apiKey, session.jwtKey);
+    }
+    if (session.appKey != undefined && session.appKey.length > 0 && session.appSecret != undefined && session.appSecret.length > 0) {
+        headers["x-app-signature"] = generateSignature(session.appKey, session.appSecret);
+        headers["x-app-key"] = session.appKey;
     }
 
     // Execute request
@@ -126,9 +130,6 @@ export async function generateUtmvcCookie(session: Session, input: UtmvcInput): 
     }
     if (response.result.payload == undefined) {
         throw new InvalidApiResponseError("No payload obtained from API");
-    }
-    if (response.result.swhanedl == undefined) {
-        throw new InvalidApiResponseError("No swhanedl obtained from API");
     }
 
     return {
