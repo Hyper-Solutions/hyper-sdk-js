@@ -4,7 +4,6 @@ import {sign} from "jsonwebtoken";
  * Compression types supported by the SDK
  */
 export enum CompressionType {
-    None = "none",
     Gzip = "gzip",
     Zstd = "zstd"
 }
@@ -12,13 +11,15 @@ export enum CompressionType {
 /**
  * An invalid API key was passed into {@link Session}.
  */
-export class InvalidApiKeyError extends Error {}
+export class InvalidApiKeyError extends Error {
+}
 
 /**
  * A caller attempted to call {@link Session#generateSignature|generateSignature} when the
  * {@link Session} doesn't have a JWT key set.
  */
-export class NoJwtKeyError extends Error {}
+export class NoJwtKeyError extends Error {
+}
 
 /**
  * Generates the value used for the `X-Signature` API request header.
@@ -66,6 +67,23 @@ export interface SessionOptions {
      * Request timeout in milliseconds. Defaults to 30000 (30 seconds).
      */
     timeout?: number;
+
+    /**
+     * HTTP proxy URL. Supports HTTP and HTTPS proxies.
+     * Format: http://[username:password@]host:port
+     * Example: http://proxy.example.com:8080 or http://user:pass@proxy.example.com:8080
+     *
+     * WARNING: Proxy support adds significant latency and should only be used for debugging
+     * network issues or when absolutely necessary. Direct connections are much faster.
+     */
+    proxy?: string;
+
+    /**
+     * Whether to reject unauthorized certificates (self-signed, expired, etc.).
+     * Set to false to allow self-signed certificates. Defaults to true for security.
+     * WARNING: Setting this to false makes connections vulnerable to man-in-the-middle attacks.
+     */
+    rejectUnauthorized?: boolean;
 }
 
 /**
@@ -103,6 +121,16 @@ export class Session {
     public readonly timeout: number;
 
     /**
+     * Proxy used to make API requests.
+     */
+    public readonly proxy?: string;
+
+    /**
+     * Whether to reject unauthorized certificates.
+     */
+    public readonly rejectUnauthorized: boolean;
+
+    /**
      * Creates a new session.
      * @param apiKey Your Hyper Solutions API key
      * @param jwtKey Your JWT key. This is only required if you wish to utilize request signing to prevent replay attacks.
@@ -127,5 +155,7 @@ export class Session {
         this.appSecret = appSecret;
         this.compression = options?.compression ?? CompressionType.Zstd;
         this.timeout = options?.timeout ?? 30000;
+        this.proxy = options?.proxy;
+        this.rejectUnauthorized = options?.rejectUnauthorized ?? true;
     }
 }

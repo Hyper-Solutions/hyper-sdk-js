@@ -1,4 +1,4 @@
-import { request } from 'undici';
+import { request, ProxyAgent, Agent } from 'undici';
 import { generateSignature, Session, CompressionType } from "../index";
 import * as zlib from "zlib";
 import * as zstd from "@mongodb-js/zstd";
@@ -38,7 +38,6 @@ async function compressPayload(payload: Buffer, compression: CompressionType): P
                 throw new InvalidApiResponseError("Zstd compression requested but @mongodb-js/zstd package not installed. Run: npm install @mongodb-js/zstd");
             }
             return Buffer.from(await zstd.compress(payload));
-        case CompressionType.None:
         default:
             return payload;
     }
@@ -80,7 +79,7 @@ export async function sendRequest<TInput = any, TResponse extends IBaseApiRespon
     let useCompression = false;
 
     // Check if payload should be compressed
-    if (session.compression !== CompressionType.None && requestBody.length > 1000) {
+    if (requestBody.length > 1000) {
         try {
             requestBody = await compressPayload(requestBody, session.compression);
             useCompression = true;
@@ -93,8 +92,8 @@ export async function sendRequest<TInput = any, TResponse extends IBaseApiRespon
     const headers: Record<string, string> = {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
-        'Accept-Encoding': 'br, gzip, zstd', // Accept compressed responses
         'X-Api-Key': session.apiKey,
+        'Accept-Encoding': session.compression,
         'User-Agent': 'Hyper Solutions TypeScript SDK'
     };
 
@@ -116,13 +115,36 @@ export async function sendRequest<TInput = any, TResponse extends IBaseApiRespon
     }
 
     try {
-        const response = await request(url, {
+        // Prepare request options
+        const requestOptions: any = {
             method: 'POST',
             headers,
             body: requestBody,
-            headersTimeout: 30000,
-            bodyTimeout: 60000
-        });
+            headersTimeout: session.timeout,
+            bodyTimeout: session.timeout * 2
+        };
+
+        // Add proxy support if configured
+        if (session.proxy) {
+            requestOptions.dispatcher = new ProxyAgent({
+                uri: session.proxy,
+                ...(session.rejectUnauthorized === false && {
+                    requestTls: {
+                        rejectUnauthorized: false
+                    }
+                })
+            });
+        } else if (!session.rejectUnauthorized) {
+            // For direct connections without proxy, use Agent
+            requestOptions.dispatcher = new Agent({
+                connect: {
+                    rejectUnauthorized: false
+                }
+            });
+        }
+
+        // Make HTTP request using undici
+        const response = await request(url, requestOptions);
 
         // Read response body
         let responseBody = Buffer.from(await response.body.arrayBuffer());
