@@ -1,8 +1,8 @@
-import { request, ProxyAgent, Agent } from 'undici';
-import { generateSignature, Session, CompressionType } from "../index";
+import {request, ProxyAgent, Agent} from 'undici';
+import {generateSignature, Session, CompressionType} from "../index";
 import * as zlib from "zlib";
 import * as zstd from "@mongodb-js/zstd";
-import { promisify } from "util";
+import {promisify} from "util";
 
 
 // Compression utilities
@@ -128,17 +128,16 @@ export async function sendRequest<TInput = any, TResponse extends IBaseApiRespon
         if (session.proxy) {
             requestOptions.dispatcher = new ProxyAgent({
                 uri: session.proxy,
-                ...(session.rejectUnauthorized === false && {
-                    requestTls: {
-                        rejectUnauthorized: false
-                    }
-                })
+                requestTls: {
+                    rejectUnauthorized: session.rejectUnauthorized,
+                    allowH2: true,
+                }
             });
-        } else if (!session.rejectUnauthorized) {
-            // For direct connections without proxy, use Agent
+        } else {
             requestOptions.dispatcher = new Agent({
                 connect: {
-                    rejectUnauthorized: false
+                    rejectUnauthorized: session.rejectUnauthorized,
+                    allowH2: true
                 }
             });
         }
