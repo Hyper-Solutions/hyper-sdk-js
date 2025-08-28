@@ -1,6 +1,6 @@
-import {parseObject} from "./util";
-import {sendRequestWithHeaders} from "./api";
-import {Session} from "../index";
+import { parseObject } from "./util";
+import { sendPayloadWithHeadersRequest } from "../shared/api-client";
+import { Session } from "../index";
 
 /**
  * Slider parse result.
@@ -103,5 +103,5 @@ export class SliderInput {
  * @returns {Promise<{payload: string, headers: {[key: string]: string}}>} A {@link Promise} that resolves to an object containing the slider payload and response headers
  */
 export function generateSliderPayload(session: Session, input: SliderInput): Promise<{ payload: string, headers: { [key: string]: string } }> {
-    return sendRequestWithHeaders(session, "https://datadome.hypersolutions.co/slider", input);
+    return sendPayloadWithHeadersRequest(session, "https://datadome.hypersolutions.co/slider", input);
 }

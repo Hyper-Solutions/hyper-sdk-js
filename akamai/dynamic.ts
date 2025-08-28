@@ -1,5 +1,5 @@
-import {Session} from "../index";
-import {sendRequest} from "./api";
+import { Session } from "../index";
+import { sendPayloadRequest } from "../shared/api-client";
 
 /**
  * V3DynamicInput input.
@@ -20,9 +20,9 @@ export class V3DynamicInput {
 /**
  * Parses v3 dynamic script data that can be used to generate sensor data for this version.
  * @param session The {@link Session}
- * @param input The {@link SbsdInput}
+ * @param input The {@link V3DynamicInput}
  * @returns {Promise<string>} A {@link Promise} that, when resolved, will contain the dynamic values
  */
 export async function parseV3DynamicValues(session: Session, input: V3DynamicInput): Promise<string> {
-    return sendRequest(session, "https://akm.hypersolutions.co/v3dynamic", input);
+    return sendPayloadRequest(session, "https://akm.hypersolutions.co/v3dynamic", input);
 }

@@ -1,7 +1,5 @@
-import {generateSignature, Session} from "../index";
-import {IApiResponse, InvalidApiResponseError} from "./api";
-import {IHeaders} from "typed-rest-client/Interfaces";
-import * as rm from "typed-rest-client";
+import { Session } from "../index";
+import { sendRequest, IBaseApiResponse, InvalidApiResponseError } from "../shared/api-client";
 
 /**
  * TrustDecision payload generation input.
@@ -35,6 +33,15 @@ export class PayloadInput {
 }
 
 /**
+ * TrustDecision payload response interface
+ */
+interface ITrustDecisionPayloadResponse extends IBaseApiResponse {
+    payload?: string;
+    timeZone?: string;
+    clientId?: string;
+}
+
+/**
  * Generates TrustDecision payload that should be posted to TrustDecision's fingerprinting endpoint.
  * Also returns timezone and clientId required for subsequent operations.
  * @param session The {@link Session}
@@ -42,46 +49,26 @@ export class PayloadInput {
  * @returns {Promise<{payload: string, timeZone: string, clientId: string}>} A {@link Promise} that, when resolved, will contain payload data
  */
 export async function generateTrustDecisionPayload(session: Session, input: PayloadInput): Promise<{payload: string, timeZone: string, clientId: string}> {
-    const headers: IHeaders = {
-        "Content-Type": "application/json",
-        "x-api-key": session.apiKey
-    };
-    if (session.jwtKey != undefined && session.jwtKey.length > 0) {
-        headers["x-signature"] = generateSignature(session.apiKey, session.jwtKey);
-    }
-    if (session.appKey != undefined && session.appKey.length > 0 && session.appSecret != undefined && session.appSecret.length > 0) {
-        headers["x-app-signature"] = generateSignature(session.appKey, session.appSecret);
-        headers["x-app-key"] = session.appKey;
-    }
+    const response = await sendRequest<PayloadInput, ITrustDecisionPayloadResponse>(
+        session,
+        "https://trustdecision.hypersolutions.co/payload",
+        input,
+        (res) => {
+            if (!res.payload) {
+                throw new InvalidApiResponseError("No payload obtained from API");
+            }
+            if (!res.timeZone) {
+                throw new InvalidApiResponseError("No timeZone obtained from API");
+            }
+            if (!res.clientId) {
+                throw new InvalidApiResponseError("No clientId obtained from API");
+            }
+        }
+    );
 
-    // Execute request
-    const response: rm.IRestResponse<IApiResponse> = await session.client.create("https://trustdecision.hypersolutions.co/payload", input, {
-        acceptHeader: "application/json",
-        additionalHeaders: headers
-    });
-
-    // Validate response and return
-    if (response.statusCode != 200) {
-        throw new InvalidApiResponseError("Bad HTTP status code " + response.statusCode);
-    }
-    if (response.result == null) {
-        throw new InvalidApiResponseError("Invalid API response");
-    }
-    if (response.result.error != undefined) {
-        throw new InvalidApiResponseError(response.result.error);
-    }
-    if (response.result.payload == undefined) {
-        throw new InvalidApiResponseError("No payload obtained from API");
-    }
-    if (response.result.timeZone == undefined) {
-        throw new InvalidApiResponseError("No timeZone obtained from API");
-    }
-    if (response.result.clientId == undefined) {
-        throw new InvalidApiResponseError("No clientId obtained from API");
-    }
     return {
-        payload: response.result.payload,
-        timeZone: response.result.timeZone,
-        clientId: response.result.clientId
+        payload: response.payload!,
+        timeZone: response.timeZone!,
+        clientId: response.clientId!
     };
 }

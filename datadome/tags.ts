@@ -1,6 +1,6 @@
-import {parseObject} from "./util";
-import {Session} from "../index";
-import {sendRequest} from "./api";
+import { parseObject } from "./util";
+import { Session } from "../index";
+import { sendPayloadRequest } from "../shared/api-client";
 
 /**
  * Tags API input.
@@ -42,9 +42,9 @@ export class TagsInput {
 /**
  * Generates a DataDome tags payload that can be used to obtain a solved `datadome` cookie.
  * @param session The {@link Session}
- * @param input The {@link InterstitialInput}
+ * @param input The {@link TagsInput}
  * @returns {Promise<string>} A {@link Promise} that, when resolved, will contain a tags payload
  */
 export function generateTagsPayload(session: Session, input: TagsInput): Promise<string> {
-    return sendRequest(session, "https://datadome.hypersolutions.co/tags", input);
+    return sendPayloadRequest(session, "https://datadome.hypersolutions.co/tags", input);
 }

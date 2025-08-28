@@ -1,6 +1,6 @@
-import {parseObject} from "./util";
-import {Session} from "../index";
-import {sendRequestWithHeaders} from "./api";
+import { parseObject } from "./util";
+import { Session } from "../index";
+import { sendPayloadWithHeadersRequest } from "../shared/api-client";
 
 /**
  * Parses the device check URL (`/interstitial/?initialCid`...) from a blocked response body.
@@ -60,5 +60,5 @@ export class InterstitialInput {
  * @returns {Promise<{payload: string, headers: {[key: string]: string}}>} A {@link Promise} that resolves to an object containing the interstitial payload and response headers
  */
 export function generateInterstitialPayload(session: Session, input: InterstitialInput): Promise<{ payload: string, headers: { [key: string]: string } }> {
-    return sendRequestWithHeaders(session, "https://datadome.hypersolutions.co/interstitial", input);
+    return sendPayloadWithHeadersRequest(session, "https://datadome.hypersolutions.co/interstitial", input);
 }

@@ -1,7 +1,5 @@
-import {generateSignature, Session} from "../index";
-import {IApiResponse, InvalidApiResponseError} from "./api";
-import {IHeaders} from "typed-rest-client/Interfaces";
-import * as rm from "typed-rest-client";
+import { Session } from "../index";
+import { sendRequest, IPayloadWithContextResponse, InvalidApiResponseError } from "../shared/api-client";
 
 /**
  * Sensor data input.
@@ -50,45 +48,25 @@ export class SensorInput {
  * Generates sensor data that can be used to obtain a valid `_abck` cookie.
  * @param session The {@link Session}
  * @param input The {@link SensorInput}
- * @returns {Promise<string>} A {@link Promise} that, when resolved, will contain sensor data
+ * @returns {Promise<{payload: string, context: string}>} A {@link Promise} that, when resolved, will contain sensor data and context
  */
 export async function generateSensorData(session: Session, input: SensorInput): Promise<{payload: string, context: string}> {
-    const headers: IHeaders = {
-        "Content-Type": "application/json",
-        "X-Api-Key": session.apiKey
-    };
-    if (session.jwtKey != undefined && session.jwtKey.length > 0) {
-        headers["X-Signature"] = generateSignature(session.apiKey, session.jwtKey);
-    }
-    if (session.appKey != undefined && session.appKey.length > 0 && session.appSecret != undefined && session.appSecret.length > 0) {
-        headers["x-app-signature"] = generateSignature(session.appKey, session.appSecret);
-        headers["x-app-key"] = session.appKey;
-    }
+    const response = await sendRequest<SensorInput, IPayloadWithContextResponse>(
+        session,
+        "https://akm.hypersolutions.co/v2/sensor",
+        input,
+        (res) => {
+            if (!res.payload) {
+                throw new InvalidApiResponseError("No payload obtained from API");
+            }
+            if (!res.context) {
+                throw new InvalidApiResponseError("No context obtained from API");
+            }
+        }
+    );
 
-    // Execute request
-    const response: rm.IRestResponse<IApiResponse> = await session.client.create("https://akm.hypersolutions.co/v2/sensor", input, {
-        acceptHeader: "application/json",
-        additionalHeaders: headers
-    });
-
-    // Validate response and return
-    if (response.statusCode != 200) {
-        throw new InvalidApiResponseError("Bad HTTP status code " + response.statusCode);
-    }
-    if (response.result == null) {
-        throw new InvalidApiResponseError("Invalid API response");
-    }
-    if (response.result.error != undefined) {
-        throw new InvalidApiResponseError(response.result.error);
-    }
-    if (response.result.payload == undefined) {
-        throw new InvalidApiResponseError("No payload obtained from API");
-    }
-    if (response.result.context == undefined) {
-        throw new InvalidApiResponseError("No context obtained from API");
-    }
     return {
-        payload: response.result.payload,
-        context: response.result.context
+        payload: response.payload!,
+        context: response.context!
     };
 }

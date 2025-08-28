@@ -1,5 +1,5 @@
-import {Session} from "../index";
-import {sendRequest} from "./api";
+import { Session } from "../index";
+import { sendPayloadRequest } from "../shared/api-client";
 
 /**
  * Parses the required pixel challenge variable from the given HTML source code.
@@ -41,7 +41,7 @@ export class PixelScriptUrls {
  *
  * Returns null if the URL couldn't be found.
  * @param src The HTML source code
- * @returns {[]string} The generated URL's. The first element is the script URL, and the second is the post URL.
+ * @returns {PixelScriptUrls} The generated URLs. Contains both script URL and post URL.
  */
 export function parsePixelScriptUrl(src: string): PixelScriptUrls | null {
     const result = /src="(https?:\/\/.+\/akam\/\d+\/\w+)"/.exec(src);
@@ -63,7 +63,7 @@ export function parsePixelScriptUrl(src: string): PixelScriptUrls | null {
  * Gets the dynamic value from the pixel script.
  *
  * Returns null if the dynamic variable couldn't be found.
- * @param src The HTML source code
+ * @param src The pixel script source code
  * @returns {string} The dynamic variable
  */
 export function parsePixelScriptVar(src: string): string | null {
@@ -118,7 +118,8 @@ export class PixelInput {
  * Generates pixel data that can be used to obtain a valid `ak_bmsc` cookie.
  * @param session The {@link Session}
  * @param input The {@link PixelInput}
+ * @returns {Promise<string>} A {@link Promise} that, when resolved, will contain the pixel data
  */
 export async function generatePixelData(session: Session, input: PixelInput): Promise<string> {
-    return sendRequest(session, "https://akm.hypersolutions.co/pixel", input);
+    return sendPayloadRequest(session, "https://akm.hypersolutions.co/pixel", input);
 }
