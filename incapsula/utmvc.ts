@@ -1,8 +1,6 @@
 import assert from "assert";
-import {generateSignature, Session} from "../index";
-import {IApiResponse, InvalidApiResponseError, sendRequest} from "./api";
-import * as rm from "typed-rest-client/RestClient";
-import {IHeaders} from "typed-rest-client/Interfaces";
+import { Session } from "../index";
+import { sendRequest, IUtmvcResponse, InvalidApiResponseError } from "../shared/api-client";
 
 const scriptRegex = new RegExp(`src="(/_Incapsula_Resource\?[^"]*)"`);
 
@@ -61,8 +59,7 @@ export interface Cookie {
 export function getSessionIds(cookies: Cookie[]): string[] {
     return cookies
         .filter(cookie => isSessionCookie(cookie.name))
-        .map(cookie => cookie.value)
-    ;
+        .map(cookie => cookie.value);
 }
 
 /**
@@ -96,44 +93,22 @@ export class UtmvcInput {
  * Generates a `___utmvc` cookie.
  * @param session The {@link Session}
  * @param input The {@link UtmvcInput}
- * @returns {Promise<string>} A {@link Promise} that, when resolved, will contain a `___utmvc` cookie
+ * @returns {Promise<{payload: string, swhanedl: string | undefined}>} A {@link Promise} that, when resolved, will contain a `___utmvc` cookie
  */
 export async function generateUtmvcCookie(session: Session, input: UtmvcInput): Promise<{payload: string, swhanedl: string | undefined}> {
-    // Create request headers
-    const headers: IHeaders = {
-        "Content-Type": "application/json",
-        "X-Api-Key": session.apiKey
-    };
-    if (session.jwtKey != undefined && session.jwtKey.length > 0) {
-        headers["X-Signature"] = generateSignature(session.apiKey, session.jwtKey);
-    }
-    if (session.appKey != undefined && session.appKey.length > 0 && session.appSecret != undefined && session.appSecret.length > 0) {
-        headers["x-app-signature"] = generateSignature(session.appKey, session.appSecret);
-        headers["x-app-key"] = session.appKey;
-    }
-
-    // Execute request
-    const response: rm.IRestResponse<IApiResponse> = await session.client.create("https://incapsula.hypersolutions.co/utmvc", input, {
-        acceptHeader: "application/json",
-        additionalHeaders: headers
-    });
-
-    // Validate response and return
-    if (response.statusCode != 200) {
-        throw new InvalidApiResponseError("Bad HTTP status code " + response.statusCode);
-    }
-    if (response.result == null) {
-        throw new InvalidApiResponseError("Invalid API response");
-    }
-    if (response.result.error != undefined) {
-        throw new InvalidApiResponseError(response.result.error);
-    }
-    if (response.result.payload == undefined) {
-        throw new InvalidApiResponseError("No payload obtained from API");
-    }
+    const response = await sendRequest<UtmvcInput, IUtmvcResponse>(
+        session,
+        "https://incapsula.hypersolutions.co/utmvc",
+        input,
+        (res) => {
+            if (!res.payload) {
+                throw new InvalidApiResponseError("No payload obtained from API");
+            }
+        }
+    );
 
     return {
-        payload: response.result.payload,
-        swhanedl: response.result.swhanedl
+        payload: response.payload!,
+        swhanedl: response.swhanedl
     };
 }

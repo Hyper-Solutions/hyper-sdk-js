@@ -1,7 +1,5 @@
-import {generateSignature, Session} from "../index";
-import {IApiResponse, InvalidApiResponseError} from "./api";
-import {IHeaders} from "typed-rest-client/Interfaces";
-import * as rm from "typed-rest-client";
+import { Session } from "../index";
+import { sendPayloadRequest } from "../shared/api-client";
 
 /**
  * TrustDecision session key decode input.
@@ -30,36 +28,5 @@ export class DecodeInput {
  * @returns {Promise<string>} A {@link Promise} that, when resolved, will contain the decoded session key
  */
 export async function decodeTrustDecisionSessionKey(session: Session, input: DecodeInput): Promise<string> {
-    const headers: IHeaders = {
-        "Content-Type": "application/json",
-        "x-api-key": session.apiKey
-    };
-    if (session.jwtKey != undefined && session.jwtKey.length > 0) {
-        headers["x-signature"] = generateSignature(session.apiKey, session.jwtKey);
-    }
-    if (session.appKey != undefined && session.appKey.length > 0 && session.appSecret != undefined && session.appSecret.length > 0) {
-        headers["x-app-signature"] = generateSignature(session.appKey, session.appSecret);
-        headers["x-app-key"] = session.appKey;
-    }
-
-    // Execute request
-    const response: rm.IRestResponse<IApiResponse> = await session.client.create("https://trustdecision.hypersolutions.co/decode", input, {
-        acceptHeader: "application/json",
-        additionalHeaders: headers
-    });
-
-    // Validate response and return
-    if (response.statusCode != 200) {
-        throw new InvalidApiResponseError("Bad HTTP status code " + response.statusCode);
-    }
-    if (response.result == null) {
-        throw new InvalidApiResponseError("Invalid API response");
-    }
-    if (response.result.error != undefined) {
-        throw new InvalidApiResponseError(response.result.error);
-    }
-    if (response.result.payload == undefined) {
-        throw new InvalidApiResponseError("No payload obtained from API");
-    }
-    return response.result.payload;
+    return sendPayloadRequest(session, "https://trustdecision.hypersolutions.co/decode", input);
 }

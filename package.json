@@ -12,10 +12,11 @@
   "author": "Hyper Solutions",
   "license": "MIT",
   "dependencies": {
+    "@mongodb-js/zstd": "^2.0.1",
     "@types/jsonwebtoken": "^9.0.5",
     "jsonwebtoken": "^9.0.2",
-    "typed-rest-client": "^1.8.11",
-    "typescript": "^5.4.4"
+    "typescript": "^5.4.4",
+    "undici": "^7.15.0"
   },
   "devDependencies": {
     "@babel/core": "^7.23.7",

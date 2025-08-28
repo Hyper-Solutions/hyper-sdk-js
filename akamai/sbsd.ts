@@ -1,5 +1,5 @@
-import {Session} from "../index";
-import {sendRequest} from "./api";
+import { Session } from "../index";
+import { sendPayloadRequest } from "../shared/api-client";
 
 /**
  * Sbsd input.
@@ -17,6 +17,7 @@ export class SbsdInput {
     /**
      * Creates a new instance.
      * Refer to the {@link https://docs.justhyped.dev/akamai-web/api-reference|documentation} for more information.
+     * @param index The index value
      * @param uuid The uuid of the sbsd challenge (https://example.com/.well-known/sbsd?v=dcc78710-14fe-3835-cc6e-b9b5ea3b6010). uuid is dcc78710-14fe-3835-cc6e-b9b5ea3b6010 on this url.
      * @param o_cookie The "sbsd_o" cookie value
      * @param pageUrl The URL of the page
@@ -44,5 +45,5 @@ export class SbsdInput {
  * @returns {Promise<string>} A {@link Promise} that, when resolved, will contain sbsd sensor data
  */
 export async function generateSbsdPayload(session: Session, input: SbsdInput): Promise<string> {
-    return sendRequest(session, "https://akm.hypersolutions.co/sbsd", input);
+    return sendPayloadRequest(session, "https://akm.hypersolutions.co/sbsd", input);
 }
