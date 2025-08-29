@@ -15,7 +15,7 @@ Perfect for **web scraping**, **automation**, and **data collection** from prote
 
 Before using this SDK, you'll need an API key from Hyper Solutions:
 
-1. **Visit [hypersolutions.co](https://hypersolutions.co/)** to create your account
+1. **Visit [hypersolutions.co](https://hypersolutions.co?utm_source=github&utm_medium=sdk_readme&utm_campaign=api_access)** to create your account
 2. **Choose your plan**:
     - 💳 **Pay-as-you-go**: Perfect for testing and small-scale usage
     - 📊 **Subscription plans**: Cost-effective for high-volume applications
@@ -85,7 +85,7 @@ const session = new Session("your-api-key");
 const session = new Session(
     "your-api-key",
     "your-jwt-key",
-    "your-app-key", 
+    "your-app-key",
     "your-app-secret",
     customRequestOptions
 );
@@ -158,12 +158,12 @@ const needsRefresh = isAkamaiCookieInvalidated(cookieValue);
 Handle **Akamai pixel challenges** for advanced bot detection bypass:
 
 ```typescript
-import { 
-    PixelInput, 
+import {
+    PixelInput,
     generatePixelData,
-    parsePixelHtmlVar, 
-    parsePixelScriptUrl, 
-    parsePixelScriptVar 
+    parsePixelHtmlVar,
+    parsePixelScriptUrl,
+    parsePixelScriptVar
 } from 'hyper-sdk-js';
 
 // Parse pixel challenge data
@@ -237,11 +237,11 @@ const swhanedl = result.swhanedl;
 Parse **UTMVC script paths** and generate submit paths:
 
 ```typescript
-import { 
-    parseUtmvcScriptPath, 
+import {
+    parseUtmvcScriptPath,
     generateUtmvcScriptPath,
     getSessionIds,
-    isSessionCookie 
+    isSessionCookie
 } from 'hyper-sdk-js';
 
 // Parse script path from content
@@ -316,10 +316,10 @@ Solve **DataDome captchas** including slider challenges and interstitial pages.
 Bypass **DataDome interstitial pages**:
 
 ```typescript
-import { 
-    InterstitialInput, 
+import {
+    InterstitialInput,
     generateInterstitialPayload,
-    parseInterstitialDeviceCheckUrl 
+    parseInterstitialDeviceCheckUrl
 } from 'hyper-sdk-js';
 
 // Parse device check URL
@@ -340,10 +340,10 @@ const headers = result.headers;
 Solve **DataDome slider captchas** automatically:
 
 ```typescript
-import { 
-    SliderInput, 
+import {
+    SliderInput,
     generateSliderPayload,
-    parseSliderDeviceCheckUrl 
+    parseSliderDeviceCheckUrl
 } from 'hyper-sdk-js';
 
 // Parse device check URL
@@ -356,7 +356,7 @@ if (parseResult.isIpBanned) {
     const result = await generateSliderPayload(session, new SliderInput(
         // slider input fields
     ));
-    
+
     const checkUrl = result.payload;
     const headers = result.headers;
     // GET request to checkUrl
