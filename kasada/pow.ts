@@ -13,6 +13,10 @@ export class KasadaPowInput {
      * The x-kpsdk-ct value returned by the /tl POST request.
      */
     ct: string;
+    /**
+     * The domain.
+     */
+    domain: string;
 
     /**
      * Can be used to pre-generate POW strings.
@@ -24,11 +28,13 @@ export class KasadaPowInput {
      * Creates a new instance of KasadaPowInput.
      * @param st The x-kpsdk-st value returned by the /tl POST request.
      * @param ct The x-kpsdk-ct value returned by the /tl POST request.
+     * @param domain The domain.
      * @param workTime Optional. Can be used to pre-generate POW strings.
      */
-    constructor(st: number, ct: string, workTime?: number) {
+    constructor(st: number, ct: string, domain: string, workTime?: number) {
         this.st = st;
         this.ct = ct;
+        this.domain = domain;
         if (workTime !== undefined) {
             this.workTime = workTime;
         }
