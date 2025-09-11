@@ -14,6 +14,10 @@ export class KasadaPowInput {
      */
     ct: string;
     /**
+     * The x-kpsdk-fc value returned by the /mfc GET request, if used on the site.
+     */
+    fc?: string;
+    /**
      * The domain.
      */
     domain: string;
@@ -31,12 +35,15 @@ export class KasadaPowInput {
      * @param domain The domain.
      * @param workTime Optional. Can be used to pre-generate POW strings.
      */
-    constructor(st: number, ct: string, domain: string, workTime?: number) {
+    constructor(st: number, ct: string, domain: string, fc?: string, workTime?: number) {
         this.st = st;
         this.ct = ct;
         this.domain = domain;
         if (workTime !== undefined) {
             this.workTime = workTime;
+        }
+        if (fc !== undefined) {
+            this.fc = fc;
         }
     }
 }

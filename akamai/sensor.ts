@@ -1,5 +1,5 @@
-import { Session } from "../index";
-import { sendRequest, IPayloadWithContextResponse, InvalidApiResponseError } from "../shared/api-client";
+import {Session} from "../index";
+import {sendRequest, IPayloadWithContextResponse, InvalidApiResponseError} from "../shared/api-client";
 
 /**
  * Sensor data input.
@@ -13,8 +13,7 @@ export class SensorInput {
     readonly ip: string;
     readonly acceptLanguage: string;
     readonly context: string;
-    readonly scriptHash?: string;
-    readonly dynamicValues?: string;
+    readonly script: string;
 
     /**
      * Creates a new instance.
@@ -27,19 +26,17 @@ export class SensorInput {
      * @param ip The IPV4 address of your network or proxy.
      * @param acceptLanguage Your accept-language header.
      * @param context Empty on first sensor, context from last sensor response on subsequent sensors.
-     * @param scriptHash The hash of the script, optional.
-     * @param dynamicValues The dynamic values required for v3 dynamic version.
+     * @param script Script is mutually exclusive with [SensorInput.Context], the first sensor request should include the script field. Subsequent request should only include the Context.
      */
-    public constructor(abck: string, bmsz: string, version: string, pageUrl: string, userAgent: string, ip: string, acceptLanguage: string, context: string, scriptHash?: string, dynamicValues?: string) {
+    public constructor(abck: string, bmsz: string, version: string, pageUrl: string, userAgent: string, ip: string, acceptLanguage: string, context: string, script: string) {
         this.abck = abck;
         this.bmsz = bmsz;
         this.version = version;
         this.pageUrl = pageUrl;
         this.userAgent = userAgent;
-        this.scriptHash = scriptHash;
         this.ip = ip;
         this.acceptLanguage = acceptLanguage;
-        this.dynamicValues = dynamicValues;
+        this.script = script;
         this.context = context;
     }
 }
@@ -50,7 +47,10 @@ export class SensorInput {
  * @param input The {@link SensorInput}
  * @returns {Promise<{payload: string, context: string}>} A {@link Promise} that, when resolved, will contain sensor data and context
  */
-export async function generateSensorData(session: Session, input: SensorInput): Promise<{payload: string, context: string}> {
+export async function generateSensorData(session: Session, input: SensorInput): Promise<{
+    payload: string,
+    context: string
+}> {
     const response = await sendRequest<SensorInput, IPayloadWithContextResponse>(
         session,
         "https://akm.hypersolutions.co/v2/sensor",
