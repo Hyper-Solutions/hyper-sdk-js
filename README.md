@@ -26,12 +26,12 @@ Before using this SDK, you'll need an API key from Hyper Solutions:
 ## 🚀 Quick Start
 
 ```typescript
-import { Session, SensorInput } from 'hyper-sdk-js';
+import { Session, SensorInput, generateSensorData } from 'hyper-sdk-js';
 
 const session = new Session("your-api-key");
 
 // Generate Akamai sensor data
-const result = await session.generateSensorData(new SensorInput(
+const result = await generateSensorData(session, new SensorInput(
     // sensor input fields
 ));
 
@@ -174,18 +174,6 @@ const scriptVar = parsePixelScriptVar(scriptContent);
 // Generate pixel data
 const pixelData = await generatePixelData(session, new PixelInput(
     // pixel input fields
-));
-```
-
-### V3 Dynamic Values
-
-Parse V3 dynamic script values for advanced sensor generation:
-
-```typescript
-import { V3DynamicInput, parseV3DynamicValues } from 'hyper-sdk-js';
-
-const dynamicValues = await parseV3DynamicValues(session, new V3DynamicInput(
-    // v3 dynamic input fields
 ));
 ```
 
