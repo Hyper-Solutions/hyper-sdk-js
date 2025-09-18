@@ -1,7 +1,6 @@
 import {request, ProxyAgent, Agent} from 'undici';
 import {generateSignature, Session, CompressionType} from "../index";
 import * as zlib from "zlib";
-import * as zstd from "@mongodb-js/zstd";
 import {promisify} from "util";
 
 
@@ -33,11 +32,6 @@ async function compressPayload(payload: Buffer, compression: CompressionType): P
     switch (compression) {
         case CompressionType.Gzip:
             return await gzip(payload);
-        case CompressionType.Zstd:
-            if (!zstd) {
-                throw new InvalidApiResponseError("Zstd compression requested but @mongodb-js/zstd package not installed. Run: npm install @mongodb-js/zstd");
-            }
-            return Buffer.from(await zstd.compress(payload));
         default:
             return payload;
     }
@@ -52,8 +46,6 @@ async function decompressResponse(responseBuffer: Buffer, contentEncoding?: stri
             return await gunzip(responseBuffer);
         case 'br':
             return await brotliDecompress(responseBuffer);
-        case 'zstd':
-            return Buffer.from(await zstd.decompress(responseBuffer));
         default:
             return responseBuffer;
     }

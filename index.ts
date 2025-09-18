@@ -5,7 +5,6 @@ import {sign} from "jsonwebtoken";
  */
 export enum CompressionType {
     Gzip = "gzip",
-    Zstd = "zstd"
 }
 
 /**
@@ -55,11 +54,8 @@ export function generateSignature(apiKey: string, jwtKey: string): string {
  */
 export interface SessionOptions {
     /**
-     * Compression type for requests. Defaults to Zstd for best performance.
+     * Compression type for requests. Defaults to Gzip for best performance.
      * When enabled, requests larger than compressionThreshold bytes will be compressed.
-     *
-     * Note: Zstd compression requires the @mongodb-js/zstd package:
-     * npm install @mongodb-js/zstd
      */
     compression?: CompressionType;
 
@@ -153,7 +149,7 @@ export class Session {
         this.jwtKey = jwtKey;
         this.appKey = appKey;
         this.appSecret = appSecret;
-        this.compression = options?.compression ?? CompressionType.Zstd;
+        this.compression = options?.compression ?? CompressionType.Gzip;
         this.timeout = options?.timeout ?? 30000;
         this.proxy = options?.proxy;
         this.rejectUnauthorized = options?.rejectUnauthorized ?? true;
