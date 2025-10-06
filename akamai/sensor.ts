@@ -14,6 +14,7 @@ export class SensorInput {
     readonly acceptLanguage: string;
     readonly context: string;
     readonly script: string;
+    readonly scriptUrl: string;
 
     /**
      * Creates a new instance.
@@ -27,8 +28,9 @@ export class SensorInput {
      * @param acceptLanguage Your accept-language header.
      * @param context Empty on first sensor, context from last sensor response on subsequent sensors.
      * @param script Script is mutually exclusive with [SensorInput.Context], the first sensor request should include the script field. Subsequent request should only include the Context.
+     * @param scriptUrl The URL of the script.
      */
-    public constructor(abck: string, bmsz: string, version: string, pageUrl: string, userAgent: string, ip: string, acceptLanguage: string, context: string, script: string) {
+    public constructor(abck: string, bmsz: string, version: string, pageUrl: string, userAgent: string, ip: string, acceptLanguage: string, context: string, script: string, scriptUrl: string) {
         this.abck = abck;
         this.bmsz = bmsz;
         this.version = version;
@@ -37,6 +39,7 @@ export class SensorInput {
         this.ip = ip;
         this.acceptLanguage = acceptLanguage;
         this.script = script;
+        this.scriptUrl = scriptUrl;
         this.context = context;
     }
 }
