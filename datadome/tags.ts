@@ -1,4 +1,3 @@
-import { parseObject } from "./util";
 import { Session } from "../index";
 import { sendPayloadRequest } from "../shared/api-client";
 
