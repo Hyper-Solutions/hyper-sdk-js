@@ -33,6 +33,7 @@ export class KasadaPowInput {
      * @param st The x-kpsdk-st value returned by the /tl POST request.
      * @param ct The x-kpsdk-ct value returned by the /tl POST request.
      * @param domain The domain.
+     * @param fc Optional. The x-kpsdk-fc value returned by the /mfc GET request.
      * @param workTime Optional. Can be used to pre-generate POW strings.
      */
     constructor(st: number, ct: string, domain: string, fc?: string, workTime?: number) {

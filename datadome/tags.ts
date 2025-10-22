@@ -7,35 +7,35 @@ import { sendPayloadRequest } from "../shared/api-client";
  */
 export class TagsInput {
     readonly userAgent: string;
-    readonly cid: string;
+    readonly cid?: string;
     readonly ddk: string;
     readonly referer: string;
     readonly type: string;
     readonly ip: string;
     readonly acceptLanguage: string;
-    readonly version?: string;
+    readonly version: string;
 
     /**
      * Creates a new instance.
      * Refer to the {@link https://docs.justhyped.dev/akamai-web/api-reference|documentation} for more information.
      * @param userAgent The user agent to impersonate
-     * @param cid Your current datadome cookie
      * @param ddk sitekey, static for each site. parse it from the /js/ payload request from browser
      * @param referer The referer visible as the referer header in the payload POST
      * @param type First time 'ch', second time 'le'
      * @param ip The IPV4 address of your network or proxy.
      * @param acceptLanguage Your accept-language header.
-     * @param version Optional version string
+     * @param version Version string
+     * @param cid Your current datadome cookie (optional)
      */
-    public constructor(userAgent: string, cid: string, ddk: string, referer: string, type: string, ip: string, acceptLanguage: string, version?: string) {
+    public constructor(userAgent: string, ddk: string, referer: string, type: string, ip: string, acceptLanguage: string, version: string, cid?: string) {
         this.userAgent = userAgent;
-        this.cid = cid;
         this.ddk = ddk;
         this.referer = referer;
         this.type = type;
         this.ip = ip;
         this.acceptLanguage = acceptLanguage;
         this.version = version;
+        this.cid = cid;
     }
 }
 
