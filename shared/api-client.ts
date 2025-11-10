@@ -1,7 +1,7 @@
-import {request, ProxyAgent, Agent} from 'undici';
-import {generateSignature, Session, CompressionType} from "../index";
+import { Agent, ProxyAgent, request } from 'undici';
+import { promisify } from "util";
 import * as zlib from "zlib";
-import {promisify} from "util";
+import { CompressionType, generateSignature, Session } from "../index";
 
 
 // Compression utilities
@@ -73,6 +73,7 @@ export async function sendRequest<TInput = any, TResponse extends IBaseApiRespon
     // Check if payload should be compressed
     if (requestBody.length > 1000) {
         try {
+            //@ts-ignore - Type mismatch between Buffer and ArrayBuffer
             requestBody = await compressPayload(requestBody, session.compression);
             useCompression = true;
         } catch (err) {
@@ -143,6 +144,7 @@ export async function sendRequest<TInput = any, TResponse extends IBaseApiRespon
         // Decompress response if needed
         const contentEncoding = response.headers['content-encoding'] as string;
         if (contentEncoding) {
+            //@ts-ignore - Type mismatch between Buffer and ArrayBuffer
             responseBody = await decompressResponse(responseBody, contentEncoding);
         }
 
