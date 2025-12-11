@@ -1,5 +1,5 @@
 import { Session } from "../index";
-import {sendPayloadRequest, sendRequest} from "../shared/api-client";
+import {sendPayloadRequest} from "../shared/api-client";
 
 /**
  * BotID header input.
