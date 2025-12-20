@@ -20,6 +20,7 @@ export function parseInterstitialDeviceCheckUrl(body: string, cookie: string, re
         cid: cookie,
         referer,
         s: dd.hasOwnProperty("s") ? dd.s.toString() : "0",
+        e: dd.e,
         b: dd.hasOwnProperty("b") ? dd.b.toString() : "0",
         dm: "cd"
     };
