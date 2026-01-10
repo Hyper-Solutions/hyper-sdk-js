@@ -1,6 +1,6 @@
 {
   "name": "hyper-sdk-js",
-  "version": "2.11.1",
+  "version": "2.11.2-beta.0",
   "description": "",
   "main": "index.js",
   "exports": {
