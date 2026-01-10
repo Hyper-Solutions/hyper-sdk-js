@@ -3,6 +3,21 @@
   "version": "2.11.1",
   "description": "",
   "main": "index.js",
+  "exports": {
+    ".": "./index.js",
+    "./akamai": "./akamai/index.js",
+    "./akamai/*": "./akamai/*.js",
+    "./datadome": "./datadome/index.js",
+    "./datadome/*": "./datadome/*.js",
+    "./incapsula": "./incapsula/index.js",
+    "./incapsula/*": "./incapsula/*.js",
+    "./kasada": "./kasada/index.js",
+    "./kasada/*": "./kasada/*.js",
+    "./shared": "./shared/index.js",
+    "./shared/*": "./shared/*.js",
+    "./trustdecision": "./trustdecision/index.js",
+    "./trustdecision/*": "./trustdecision/*.js"
+  },
   "scripts": {
     "test": "jest",
     "build": "tsc",
