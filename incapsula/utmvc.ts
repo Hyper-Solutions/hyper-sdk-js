@@ -1,6 +1,6 @@
 import assert from "assert";
-import { Session } from "../index";
-import { sendRequest, IUtmvcResponse, InvalidApiResponseError } from "../shared/api-client";
+import { Session } from "../index.js";
+import { sendRequest, IUtmvcResponse, InvalidApiResponseError } from "../shared/api-client.js";
 
 const scriptRegex = new RegExp(`src="(/_Incapsula_Resource\?[^"]*)"`);
 

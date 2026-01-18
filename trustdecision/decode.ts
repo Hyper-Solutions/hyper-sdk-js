@@ -1,5 +1,5 @@
-import { Session } from "../index";
-import { sendPayloadRequest } from "../shared/api-client";
+import { Session } from "../index.js";
+import { sendPayloadRequest } from "../shared/api-client.js";
 
 /**
  * TrustDecision session key decode input.

@@ -1,0 +1,18 @@
+# Test files
+**/*.test.ts
+**/*.test.js
+test.ts
+test.js
+__tests__/
+
+# IDE files
+.idea/
+
+# Source files (keep .d.ts)
+*.ts
+!*.d.ts
+
+# Config files
+.babelrc
+tsconfig.json
+jest.config.js

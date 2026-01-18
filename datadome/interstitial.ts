@@ -1,6 +1,6 @@
-import { parseObject } from "./util";
-import { Session } from "../index";
-import { sendPayloadWithHeadersRequest } from "../shared/api-client";
+import { parseObject } from "./util.js";
+import { Session } from "../index.js";
+import { sendPayloadWithHeadersRequest } from "../shared/api-client.js";
 
 /**
  * Parses the device check URL (`/interstitial/?initialCid`...) from a blocked response body.

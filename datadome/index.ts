@@ -1,3 +1,3 @@
-export * from './interstitial';
-export * from './slider';
-export * from './tags';
+export * from './interstitial.js';
+export * from './slider.js';
+export * from './tags.js';

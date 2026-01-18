@@ -1,5 +1,5 @@
-import { Session } from "../index";
-import { sendKasadaPayloadRequest, KasadaHeaders } from "../shared/api-client";
+import { Session } from "../index.js";
+import { sendKasadaPayloadRequest, KasadaHeaders } from "../shared/api-client.js";
 
 /**
  * Kasada payload input.

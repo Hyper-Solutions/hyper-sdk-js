@@ -1,4 +1,4 @@
-import {Session} from "../index";
+import {Session} from "../index.js";
 import {generateUtmvcCookie, UtmvcInput} from "./utmvc";
 
 jest.mock('typed-rest-client/RestClient', () => {

@@ -1,5 +1,5 @@
-import { Session } from "../index";
-import { sendRequest, IBaseApiResponse, InvalidApiResponseError } from "../shared/api-client";
+import { Session } from "../index.js";
+import { sendRequest, IBaseApiResponse, InvalidApiResponseError } from "../shared/api-client.js";
 
 /**
  * TrustDecision payload generation input.

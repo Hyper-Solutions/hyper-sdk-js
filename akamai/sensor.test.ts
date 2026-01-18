@@ -1,4 +1,4 @@
-import {Session} from "../index";
+import {Session} from "../index.js";
 import {generateSensorData, SensorInput} from "./sensor";
 
 jest.mock('typed-rest-client/RestClient', () => {
