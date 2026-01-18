@@ -1,7 +1,7 @@
 import { Agent, ProxyAgent, request } from 'undici';
 import { promisify } from "util";
 import * as zlib from "zlib";
-import { CompressionType, generateSignature, Session } from "../index";
+import { CompressionType, generateSignature, Session } from "../index.js";
 
 
 // Compression utilities

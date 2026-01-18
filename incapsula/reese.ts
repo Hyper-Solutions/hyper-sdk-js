@@ -1,5 +1,5 @@
-import { sendPayloadRequest } from "../shared/api-client";
-import { Session } from "../index";
+import { sendPayloadRequest } from "../shared/api-client.js";
+import { Session } from "../index.js";
 
 /**
  * Reese84 API input.
