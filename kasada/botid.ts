@@ -1,5 +1,5 @@
 import { Session } from "../index.js";
-import {sendPayloadRequest, sendRequest} from "../shared/api-client.js";
+import {sendPayloadRequest} from "../shared/api-client.js";
 
 /**
  * BotID header input.
