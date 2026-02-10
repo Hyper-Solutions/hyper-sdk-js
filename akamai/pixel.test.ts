@@ -1,4 +1,4 @@
-import {Session} from "../index";
+import {Session} from "../index.js";
 import {generatePixelData, PixelInput} from "./pixel";
 
 jest.mock('typed-rest-client/RestClient', () => {

@@ -1,4 +1,5 @@
-import {sign} from "jsonwebtoken";
+import jwt from 'jsonwebtoken';
+const { sign } = jwt;
 
 /**
  * Compression types supported by the SDK
@@ -156,8 +157,8 @@ export class Session {
     }
 }
 
-export * from './akamai';
-export * from './datadome';
-export * from './incapsula';
-export * from './kasada';
-export * from './trustdecision';
+export * from './akamai/index.js';
+export * from './datadome/index.js';
+export * from './incapsula/index.js';
+export * from './kasada/index.js';
+export * from './trustdecision/index.js';

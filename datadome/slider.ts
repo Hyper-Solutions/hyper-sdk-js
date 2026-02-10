@@ -1,6 +1,6 @@
-import { parseObject } from "./util";
-import { sendPayloadWithHeadersRequest } from "../shared/api-client";
-import { Session } from "../index";
+import { parseObject } from "./util.js";
+import { sendPayloadWithHeadersRequest } from "../shared/api-client.js";
+import { Session } from "../index.js";
 
 /**
  * Slider parse result.

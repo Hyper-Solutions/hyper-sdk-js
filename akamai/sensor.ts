@@ -1,5 +1,5 @@
-import {Session} from "../index";
-import {sendRequest, IPayloadWithContextResponse, InvalidApiResponseError} from "../shared/api-client";
+import {Session} from "../index.js";
+import {sendRequest, IPayloadWithContextResponse, InvalidApiResponseError} from "../shared/api-client.js";
 
 /**
  * Sensor data input.

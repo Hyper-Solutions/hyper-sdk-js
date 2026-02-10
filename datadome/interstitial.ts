@@ -1,6 +1,6 @@
-import { parseObject } from "./util";
-import { Session } from "../index";
-import { sendPayloadWithHeadersRequest } from "../shared/api-client";
+import { parseObject } from "./util.js";
+import { Session } from "../index.js";
+import { sendPayloadWithHeadersRequest } from "../shared/api-client.js";
 
 /**
  * Parses the device check URL (`/interstitial/?initialCid`...) from a blocked response body.
@@ -20,6 +20,7 @@ export function parseInterstitialDeviceCheckUrl(body: string, cookie: string, re
         cid: cookie,
         referer,
         s: dd.hasOwnProperty("s") ? dd.s.toString() : "0",
+        e: dd.e,
         b: dd.hasOwnProperty("b") ? dd.b.toString() : "0",
         dm: "cd"
     };

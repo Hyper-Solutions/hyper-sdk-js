@@ -1,8 +1,24 @@
 {
   "name": "hyper-sdk-js",
-  "version": "2.11.0",
+  "version": "2.12.0",
   "description": "",
+  "type": "module",
   "main": "index.js",
+  "exports": {
+    ".": "./index.js",
+    "./akamai": "./akamai/index.js",
+    "./akamai/*": "./akamai/*.js",
+    "./datadome": "./datadome/index.js",
+    "./datadome/*": "./datadome/*.js",
+    "./incapsula": "./incapsula/index.js",
+    "./incapsula/*": "./incapsula/*.js",
+    "./kasada": "./kasada/index.js",
+    "./kasada/*": "./kasada/*.js",
+    "./shared": "./shared/index.js",
+    "./shared/*": "./shared/*.js",
+    "./trustdecision": "./trustdecision/index.js",
+    "./trustdecision/*": "./trustdecision/*.js"
+  },
   "scripts": {
     "test": "jest",
     "build": "tsc",
