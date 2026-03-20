@@ -1,6 +1,6 @@
 {
   "name": "hyper-sdk-js",
-  "version": "2.12.0",
+  "version": "2.12.1",
   "description": "",
   "type": "module",
   "main": "index.js",

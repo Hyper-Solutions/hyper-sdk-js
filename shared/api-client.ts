@@ -43,9 +43,19 @@ async function compressPayload(payload: Buffer, compression: CompressionType): P
 async function decompressResponse(responseBuffer: Buffer, contentEncoding?: string): Promise<Buffer> {
     switch (contentEncoding) {
         case 'gzip':
+            // Check for gzip magic bytes (1f 8b) - if missing, the runtime
+            // (e.g. Bun) already decompressed the response transparently.
+            if (responseBuffer.length < 2 || responseBuffer[0] !== 0x1f || responseBuffer[1] !== 0x8b) {
+                return responseBuffer;
+            }
             return await gunzip(responseBuffer);
         case 'br':
-            return await brotliDecompress(responseBuffer);
+            try {
+                return await brotliDecompress(responseBuffer);
+            } catch {
+                // Already decompressed by runtime
+                return responseBuffer;
+            }
         default:
             return responseBuffer;
     }
