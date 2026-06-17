@@ -1,4 +1,4 @@
-const reeseScriptRegex = new RegExp(`src\\s*=\\s*"((/[^/]+/\\d+)(?:\\?.*)?)"`, 'i');
+const reeseScriptRegex = new RegExp(`src\\s*=\\s*"((/[^/]+/[^/?"]+)\\?s=[^"]*)"`, 'i');
 
 /**
  * Parses the dynamic Reese script paths from the given HTML content.
