@@ -7,7 +7,7 @@
 
 [![](https://dcbadge.limes.pink/api/server/akamai)](https://discord.gg/akamai)
 
-A powerful **TypeScript/JavaScript SDK** for bypassing modern bot protection systems including **Akamai Bot Manager**, **Incapsula**, **Kasada**, and **DataDome**. Generate valid cookies, solve anti-bot challenges, and automate protected endpoints with ease.
+A powerful **TypeScript/JavaScript SDK** for bypassing modern bot protection systems including [**Akamai Bot Manager**](https://hypersolutions.co/products/akamai), [**Incapsula**](https://hypersolutions.co/products/incapsula), [**Kasada**](https://hypersolutions.co/products/kasada), and [**DataDome**](https://hypersolutions.co/products/datadome). Generate valid cookies, solve anti-bot challenges, and automate protected endpoints with ease.
 
 Perfect for **web scraping**, **automation**, and **data collection** from protected websites.
 
@@ -367,11 +367,11 @@ const tagsPayload = await generateTagsPayload(session, new TagsInput(
 
 For detailed documentation on how to use the SDK, including examples and API reference, please visit our documentation website:
 
-[https://docs.justhyped.dev/](https://docs.justhyped.dev/)
+[https://docs.hypersolutions.co/](https://docs.hypersolutions.co/)
 
 ### Getting Help
 
-- Check our [documentation](https://docs.justhyped.dev)
+- Check our [documentation](https://docs.hypersolutions.co/)
 - Join our [Discord community](https://discord.gg/akamai)
 
 ## 🤝 Contributing

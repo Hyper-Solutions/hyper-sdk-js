@@ -16,7 +16,7 @@ export class TagsInput {
 
     /**
      * Creates a new instance.
-     * Refer to the {@link https://docs.justhyped.dev/akamai-web/api-reference|documentation} for more information.
+     * Refer to the {@link https://docs.hypersolutions.co/datadome/tags|documentation} for more information.
      * @param userAgent The user agent to impersonate
      * @param ddk sitekey, static for each site. parse it from the /js/ payload request from browser
      * @param referer The referer visible as the referer header in the payload POST

@@ -1,9 +1,17 @@
 {
   "name": "hyper-sdk-js",
-  "version": "2.12.2",
-  "description": "",
+  "version": "3.0.0",
+  "description": "TypeScript/JavaScript SDK for bypassing bot protection (Akamai Bot Manager, DataDome, Incapsula, Kasada) via the Hyper Solutions API. Generate sensor data, tokens, and cookies without headless browsers.",
   "type": "module",
   "main": "index.js",
+  "homepage": "https://hypersolutions.co",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Hyper-Solutions/hyper-sdk-js.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Hyper-Solutions/hyper-sdk-js/issues"
+  },
   "exports": {
     ".": "./index.js",
     "./akamai": "./akamai/index.js",
@@ -15,9 +23,7 @@
     "./kasada": "./kasada/index.js",
     "./kasada/*": "./kasada/*.js",
     "./shared": "./shared/index.js",
-    "./shared/*": "./shared/*.js",
-    "./trustdecision": "./trustdecision/index.js",
-    "./trustdecision/*": "./trustdecision/*.js"
+    "./shared/*": "./shared/*.js"
   },
   "scripts": {
     "test": "jest",
@@ -25,7 +31,18 @@
     "prepare": "npm run build",
     "prepublishOnly": "npm run build"
   },
-  "keywords": [],
+  "keywords": [
+    "akamai",
+    "datadome",
+    "incapsula",
+    "kasada",
+    "bot-protection",
+    "bypass",
+    "anti-bot",
+    "sensor-data",
+    "web-scraping",
+    "automation"
+  ],
   "author": "Hyper Solutions",
   "license": "MIT",
   "dependencies": {

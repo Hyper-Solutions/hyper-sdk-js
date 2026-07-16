@@ -75,7 +75,7 @@ export class UtmvcInput {
      * @param userAgent The user agent to impersonate
      * @param script The Incapsula utmvc JavaScript code
      * @param sessionIds The session ID's. Read the
-     *        {@link https://docs.justhyped.dev/incapsula/api-reference|documentation} for more information.
+     *        {@link https://docs.hypersolutions.co/incapsula/api-reference|documentation} for more information.
      *        Callers can use {@link getSessionIds} or {@link isSessionCookie} to assist with extracting
      *        session cookies from their cookie jar.
      */

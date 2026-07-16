@@ -18,7 +18,7 @@ export class SensorInput {
 
     /**
      * Creates a new instance.
-     * Refer to the {@link https://docs.justhyped.dev/api-reference/akamai|documentation} for more information.
+     * Refer to the {@link https://docs.hypersolutions.co/api-reference/akamai|documentation} for more information.
      * @param abck The current `_abck` cookie.
      * @param bmsz The current `bm_sz` cookie.
      * @param version The Akamai web SDK version.
