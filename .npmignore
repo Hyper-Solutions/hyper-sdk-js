@@ -15,4 +15,7 @@ __tests__/
 # Config files
 .babelrc
 tsconfig.json
-jest.config.js
+jest.config.*
+
+# Packed tarballs
+*.tgz
