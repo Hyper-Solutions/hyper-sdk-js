@@ -1,6 +1,6 @@
 {
   "name": "hyper-sdk-js",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "TypeScript/JavaScript SDK for bypassing bot protection (Akamai Bot Manager, DataDome, Incapsula, Kasada) via the Hyper Solutions API. Generate sensor data, tokens, and cookies without headless browsers.",
   "type": "module",
   "main": "index.js",
