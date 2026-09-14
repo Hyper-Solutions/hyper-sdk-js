@@ -68,6 +68,7 @@ export class SliderInput {
     readonly parentUrl: string;
     readonly ip: string;
     readonly acceptLanguage: string;
+    readonly script?: string;
 
     /**
      * Creates a new SliderInput instance.
@@ -83,8 +84,12 @@ export class SliderInput {
      * @param parentUrl The parent URL.
      * @param ip The IPV4 address of your network or proxy.
      * @param acceptLanguage Your accept-language header.
+     * @param script Optional. The contents of the challenge script, only needed when the page loads
+     *               it from its own file instead of inlining it. Use {@link parseChallengeScriptUrl}
+     *               on the html to find out, then GET that URL with your own client and pass the
+     *               response body here. Leave it undefined when the page inlines the script.
      */
-    public constructor(userAgent: string, deviceLink: string, html: string, puzzle: string, piece: string, parentUrl: string, ip: string, acceptLanguage: string) {
+    public constructor(userAgent: string, deviceLink: string, html: string, puzzle: string, piece: string, parentUrl: string, ip: string, acceptLanguage: string, script?: string) {
         this.userAgent = userAgent;
         this.deviceLink = deviceLink;
         this.html = html;
@@ -93,6 +98,7 @@ export class SliderInput {
         this.parentUrl = parentUrl;
         this.ip = ip;
         this.acceptLanguage = acceptLanguage;
+        this.script = script;
     }
 }
 

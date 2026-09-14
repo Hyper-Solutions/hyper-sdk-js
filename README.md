@@ -351,6 +351,42 @@ if (parseResult.isIpBanned) {
 }
 ```
 
+### The Challenge Script
+
+DataDome sometimes serves a challenge page with the challenge script in its own file instead of
+inlining it in the page:
+
+```html
+<script defer src="https://ct.captcha-delivery.com/interstitial.1.33.0.202609141.js"></script>
+```
+
+It switches between the two forms per request, so check every challenge page rather than
+configuring this once. When the page uses its own file, fetch that URL with your own client so the
+request keeps your proxy, TLS fingerprint and headers, then pass the response body as the trailing
+`script` argument. The SDK does not fetch it for you.
+
+```typescript
+import {
+    InterstitialInput,
+    generateInterstitialPayload,
+    parseChallengeScriptUrl
+} from 'hyper-sdk-js';
+
+let script: string | undefined;
+const scriptUrl = parseChallengeScriptUrl(htmlContent);
+if (scriptUrl !== null) {
+    script = await (await fetch(scriptUrl)).text();
+}
+
+const result = await generateInterstitialPayload(session, new InterstitialInput(
+    userAgent, deviceUrl, htmlContent, ip, acceptLanguage,
+    script // leave it out when the page inlines the script
+));
+```
+
+The same helper covers the slider captcha page, where `script` is the trailing argument of
+`SliderInput`. It is optional in both, so existing code keeps working unchanged.
+
 ### Tags Payload Generation
 
 Generate **DataDome tags payload**:
