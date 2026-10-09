@@ -1,4 +1,5 @@
 import { Session } from "../index.js";
+import type { SbsdResult } from "../shared/results.js";
 import { sendRequest, IPayloadWithContextResponse, InvalidApiResponseError } from "../shared/api-client.js";
 
 /**
@@ -14,6 +15,7 @@ export class SbsdInput {
     readonly ip: string;
     readonly acceptLanguage: string;
     readonly context: string;
+    readonly scriptUrl?: string;
 
     /**
      * Creates a new instance.
@@ -27,8 +29,9 @@ export class SbsdInput {
      * @param ip The IPV4 address of your network or proxy.
      * @param acceptLanguage Your accept-language header.
      * @param context The context returned by the previous sbsd request. Leave empty on the first request.
+     * @param scriptUrl Optional: the absolute src of the SBSD script tag, query included. When set, the fingerprint's resource-timing signal carries the script's own entry the way a browser's does.
      */
-    public constructor(index: number, uuid: string, o_cookie: string, pageUrl: string, userAgent: string, script: string, ip: string, acceptLanguage: string, context: string = "") {
+    public constructor(index: number, uuid: string, o_cookie: string, pageUrl: string, userAgent: string, script: string, ip: string, acceptLanguage: string, context: string = "", scriptUrl: string = "") {
         this.index = index;
         this.uuid = uuid;
         this.pageUrl = pageUrl;
@@ -38,6 +41,8 @@ export class SbsdInput {
         this.ip = ip;
         this.acceptLanguage = acceptLanguage;
         this.context = context;
+        // Left out of the request body unless set.
+        this.scriptUrl = scriptUrl || undefined;
     }
 }
 
@@ -45,12 +50,9 @@ export class SbsdInput {
  * Generates SBSD data that can be used to obtain a valid `sbsd` cookie.
  * @param session The {@link Session}
  * @param input The {@link SbsdInput}
- * @returns {Promise<{payload: string, context: string}>} A {@link Promise} that, when resolved, will contain sbsd sensor data and context
+ * @returns {Promise<SbsdResult>} A {@link Promise} that, when resolved, will contain sbsd sensor data, context and client hints
  */
-export async function generateSbsdPayload(session: Session, input: SbsdInput): Promise<{
-    payload: string,
-    context: string
-}> {
+export async function generateSbsdPayload(session: Session, input: SbsdInput): Promise<SbsdResult> {
     const response = await sendRequest<SbsdInput, IPayloadWithContextResponse>(
         session,
         "https://akm.hypersolutions.co/sbsd",
@@ -66,6 +68,7 @@ export async function generateSbsdPayload(session: Session, input: SbsdInput): P
         payload: response.payload!,
         // Absent when the request carried no context, which the index-only
         // flow still does. Unlike the sensor, sbsd does not always return one.
-        context: response.context ?? ""
+        context: response.context ?? "",
+        clientHints: response.headers
     };
 }

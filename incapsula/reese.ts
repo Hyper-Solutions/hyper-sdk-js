@@ -1,4 +1,5 @@
 import { sendPayloadRequest } from "../shared/api-client.js";
+import type { Reese84Result } from "../shared/results.js";
 import { Session } from "../index.js";
 
 /**
@@ -38,8 +39,8 @@ export class Reese84Input {
  * Generates a reese84 sensor that can be used to obtain a valid `reese84` cookie.
  * @param session The {@link Session}
  * @param input The {@link Reese84Input}
- * @returns {Promise<string>} A {@link Promise} that, when resolved, will contain a reese84 sensor
+ * @returns {Promise<Reese84Result>} A {@link Promise} that, when resolved, will contain a reese84 sensor and client hints
  */
-export async function generateReese84Sensor(session: Session, input: Reese84Input): Promise<string> {
+export async function generateReese84Sensor(session: Session, input: Reese84Input): Promise<Reese84Result> {
     return sendPayloadRequest(session, "https://incapsula.hypersolutions.co/reese84", input);
 }

@@ -1,4 +1,5 @@
 import { Session } from "../index.js";
+import type { TagsResult } from "../shared/results.js";
 import { sendPayloadRequest } from "../shared/api-client.js";
 
 /**
@@ -44,6 +45,6 @@ export class TagsInput {
  * @param input The {@link TagsInput}
  * @returns {Promise<string>} A {@link Promise} that, when resolved, will contain a tags payload
  */
-export function generateTagsPayload(session: Session, input: TagsInput): Promise<string> {
+export function generateTagsPayload(session: Session, input: TagsInput): Promise<TagsResult> {
     return sendPayloadRequest(session, "https://datadome.hypersolutions.co/tags", input);
 }

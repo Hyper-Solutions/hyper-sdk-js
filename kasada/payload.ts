@@ -1,5 +1,6 @@
 import { Session } from "../index.js";
-import { sendKasadaPayloadRequest, KasadaHeaders } from "../shared/api-client.js";
+import type { KasadaPayloadResult } from "../shared/results.js";
+import { sendKasadaPayloadRequest } from "../shared/api-client.js";
 
 /**
  * Kasada payload input.
@@ -10,6 +11,7 @@ export class KasadaPayloadInput {
     readonly script: string;
     readonly acceptLanguage: string;
     readonly ip: string;
+    readonly strict?: boolean;
 
     /**
      * Creates a new instance.
@@ -18,37 +20,30 @@ export class KasadaPayloadInput {
      * @param script The ips.js script retrieved using the IpsLink url
      * @param ip The IPV4 address of your network or proxy.
      * @param acceptLanguage Your accept-language header.
+     * @param strict Refuse the payload instead of returning one built on a guess when the script has a signal the API cannot identify yet. The request then fails with "Unidentified signals in script; refusing payload because strict was set". Off by default: such a payload usually still works.
      */
-    public constructor(userAgent: string, ipsLink: string, script: string, ip: string, acceptLanguage: string) {
+    public constructor(userAgent: string, ipsLink: string, script: string, ip: string, acceptLanguage: string, strict: boolean = false) {
         this.userAgent = userAgent;
         this.ipsLink = ipsLink;
         this.script = script;
         this.ip = ip;
         this.acceptLanguage = acceptLanguage;
+        // Left out of the request body unless set.
+        this.strict = strict || undefined;
     }
 }
 
 /**
- * Kasada payload output.
+ * @deprecated Use {@link KasadaPayloadResult}.
  */
-export interface KasadaPayloadOutput {
-    /**
-     * The payload as a string, base64 encoded for easier handling, make sure to POST the decoded bytes to /tl.
-     */
-    payload: string;
-
-    /**
-     * Kasada headers.
-     */
-    headers: KasadaHeaders;
-}
+export type KasadaPayloadOutput = KasadaPayloadResult;
 
 /**
  * Generates Kasada payload that can be used to obtain a valid `x-kpsdk-ct` token.
  * @param session The {@link Session}
  * @param input The {@link KasadaPayloadInput}
- * @returns {Promise<KasadaPayloadOutput>} A {@link Promise} that, when resolved, will contain the decoded Kasada /tl payload and headers.
+ * @returns {Promise<KasadaPayloadResult>} A {@link Promise} that, when resolved, will contain the Kasada /tl payload, its x-kpsdk-* headers and the client hints.
  */
-export async function generateKasadaPayload(session: Session, input: KasadaPayloadInput): Promise<KasadaPayloadOutput> {
+export async function generateKasadaPayload(session: Session, input: KasadaPayloadInput): Promise<KasadaPayloadResult> {
     return sendKasadaPayloadRequest(session, "https://kasada.hypersolutions.co/payload", input);
 }

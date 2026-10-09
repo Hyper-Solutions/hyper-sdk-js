@@ -1,4 +1,5 @@
 import { Session } from "../index.js";
+import type { BotIDHeaderResult } from "../shared/results.js";
 import {sendPayloadRequest} from "../shared/api-client.js";
 
 /**
@@ -29,9 +30,9 @@ export class BotIDHeaderInput {
  * Generates a BotID header that can be used as the `x-is-human` header value.
  * @param session The {@link Session}
  * @param input The {@link BotIDHeaderInput}
- * @returns {Promise<string>} A {@link Promise} that, when resolved, will contain the x-is-human header value.
+ * @returns {Promise<BotIDHeaderResult>} A {@link Promise} that, when resolved, will contain the x-is-human header value.
  */
-export async function generateBotIDHeader(session: Session, input: BotIDHeaderInput): Promise<string> {
-    return sendPayloadRequest(session, "https://kasada.hypersolutions.co/botid", input);
-
+export async function generateBotIDHeader(session: Session, input: BotIDHeaderInput): Promise<BotIDHeaderResult> {
+    const { payload } = await sendPayloadRequest(session, "https://kasada.hypersolutions.co/botid", input);
+    return { payload };
 }
