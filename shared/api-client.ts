@@ -2,6 +2,7 @@ import { Agent, ProxyAgent, request } from 'undici';
 import { promisify } from "util";
 import * as zlib from "zlib";
 import { CompressionType, generateSignature, Session } from "../index.js";
+import type { ClientHints, KasadaPayloadResult } from "./results.js";
 
 
 // Compression utilities
@@ -196,16 +197,15 @@ export async function sendRequest<TInput = any, TResponse extends IBaseApiRespon
  */
 export interface IPayloadResponse extends IBaseApiResponse {
     payload?: string;
-}
-
-export interface IPayloadWithHeadersResponse extends IBaseApiResponse {
-    payload?: string;
-    headers?: { [key: string]: string };
+    /** The Accept-CH client hints, on the endpoints that return them. */
+    headers?: ClientHints;
 }
 
 export interface IPayloadWithContextResponse extends IBaseApiResponse {
     payload?: string;
     context?: string;
+    /** The Accept-CH client hints. */
+    headers?: ClientHints;
 }
 
 export interface IUtmvcResponse extends IBaseApiResponse {
@@ -216,6 +216,8 @@ export interface IUtmvcResponse extends IBaseApiResponse {
 export interface IKasadaResponse extends IBaseApiResponse {
     payload?: string;
     headers?: KasadaHeaders;
+    /** The Accept-CH client hints; Kasada keeps them apart from its x-kpsdk-* headers. */
+    clientHints?: ClientHints;
 }
 
 export interface KasadaHeaders {
@@ -230,36 +232,15 @@ export interface KasadaHeaders {
 }
 
 /**
- * Helper function for simple payload-only requests (Akamai, Incapsula)
+ * Helper for requests that return a payload and, depending on the endpoint,
+ * the Accept-CH client hints.
  */
 export async function sendPayloadRequest<TInput = any>(
     session: Session,
     url: string,
     input: TInput
-): Promise<string> {
+): Promise<{ payload: string; clientHints?: ClientHints }> {
     const response = await sendRequest<TInput, IPayloadResponse>(
-        session,
-        url,
-        input,
-        (res) => {
-            if (!res.payload) {
-                throw new InvalidApiResponseError("No payload obtained from API");
-            }
-        }
-    );
-
-    return response.payload!;
-}
-
-/**
- * Helper function for payload + headers requests (DataDome)
- */
-export async function sendPayloadWithHeadersRequest<TInput = any>(
-    session: Session,
-    url: string,
-    input: TInput
-): Promise<{ payload: string; headers: { [key: string]: string } }> {
-    const response = await sendRequest<TInput, IPayloadWithHeadersResponse>(
         session,
         url,
         input,
@@ -272,7 +253,7 @@ export async function sendPayloadWithHeadersRequest<TInput = any>(
 
     return {
         payload: response.payload!,
-        headers: response.headers || {}
+        clientHints: response.headers
     };
 }
 
@@ -283,7 +264,7 @@ export async function sendKasadaPayloadRequest<TInput = any>(
     session: Session,
     url: string,
     input: TInput
-): Promise<{ payload: string; headers: KasadaHeaders }> {
+): Promise<KasadaPayloadResult> {
     const response = await sendRequest<TInput, IKasadaResponse>(
         session,
         url,
@@ -300,6 +281,7 @@ export async function sendKasadaPayloadRequest<TInput = any>(
 
     return {
         payload: response.payload!,
-        headers: response.headers!
+        headers: response.headers!,
+        clientHints: response.clientHints
     };
 }

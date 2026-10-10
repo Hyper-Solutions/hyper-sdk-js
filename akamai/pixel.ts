@@ -1,4 +1,5 @@
 import { Session } from "../index.js";
+import type { PixelResult } from "../shared/results.js";
 import { sendPayloadRequest } from "../shared/api-client.js";
 
 /**
@@ -120,6 +121,7 @@ export class PixelInput {
  * @param input The {@link PixelInput}
  * @returns {Promise<string>} A {@link Promise} that, when resolved, will contain the pixel data
  */
-export async function generatePixelData(session: Session, input: PixelInput): Promise<string> {
-    return sendPayloadRequest(session, "https://akm.hypersolutions.co/pixel", input);
+export async function generatePixelData(session: Session, input: PixelInput): Promise<PixelResult> {
+    const { payload } = await sendPayloadRequest(session, "https://akm.hypersolutions.co/pixel", input);
+    return { payload };
 }
