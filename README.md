@@ -206,7 +206,9 @@ const result = await generateSbsdPayload(session, new SbsdInput(
     // sbsd input fields; the optional last argument, scriptUrl, is the
     // absolute src of the SBSD script tag, query included
 ));
-// POST result.payload; pass result.context in the next SbsdInput instead of the script
+// POST result.payload; pass result.context in the next SbsdInput instead of the script.
+// A hard block (an SBSD POST with a `t` parameter) always sends the script with an
+// empty context, never one from an earlier request.
 ```
 
 ## 🔒 Incapsula Protection

@@ -34,7 +34,7 @@ function sentBodies(): any[] {
 
 const session = new Session("test-key");
 const sensorInput = () => new SensorInput("", "", "3", "", "", "", "", "", "", "");
-const sbsdInput = (scriptUrl = "") => new SbsdInput(0, "", "", "", "", "", "", "", "", scriptUrl);
+const sbsdInput = (scriptUrl = "") => new SbsdInput("", "", "", "", "", "", "", "", scriptUrl);
 const kasadaInput = (strict = false) => new KasadaPayloadInput("", "", "", "", "", strict);
 
 beforeEach(() => mockRequest.mockReset());
