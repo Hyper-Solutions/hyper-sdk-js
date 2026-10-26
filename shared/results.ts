@@ -29,6 +29,27 @@ export interface SensorResult {
     clientHints?: ClientHints;
 }
 
+/** Returned by {@link generateTelemetry}. */
+export interface TelemetryResult {
+    /** The ready-to-send value of the Akamai-BM-Telemetry header. */
+    header: string;
+    /** Send back as `context` on the next telemetry request. */
+    context: string;
+    /** Accept-CH headers for the device. Undefined when the API returned none. */
+    clientHints?: ClientHints;
+}
+
+/** Returned by {@link getTelemetryParams}. */
+export interface TelemetryParamsResult {
+    /**
+     * The site's get_params path, exactly as the browser requests it. GET it on
+     * the page's origin; the `j` in its JSON response goes into the telemetry input.
+     */
+    path: string;
+    /** Can replace the script on the first {@link generateTelemetry} request. */
+    context: string;
+}
+
 /** Returned by {@link generateSbsdPayload}. */
 export interface SbsdResult {
     /** The sbsd body to post. */
