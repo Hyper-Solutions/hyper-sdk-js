@@ -321,6 +321,23 @@ const scriptPath = parseKasadaPath(blockedPageHtml);
 // Returns: /ips.js?timestamp=...
 ```
 
+### Mobile User-Agent Generation
+
+Generate the **Kasada mobile `user-agent`** value sent on the native app flow. The mobile SDK derives it as the lowercase hex MD5 of `"<osVersion> / <bundleId> <appVersion>"`:
+
+```typescript
+import { generateKasadaUserAgent } from 'hyper-sdk-js';
+
+const userAgent = generateKasadaUserAgent({
+    osVersion: '18.0.1',            // iOS: UIDevice.systemVersion; Android: Build.VERSION.SDK_INT
+    bundleId: 'com.example.app', // iOS: CFBundleIdentifier; Android: package name
+    appVersion: '9.15.0',
+});
+// Returns: 7016adc4ba8d433533954ebad33be424
+```
+
+Available in `hyper-sdk-js` 4.1.0 and later.
+
 ## 🎯 DataDome Solutions
 
 Solve **DataDome captchas** including slider challenges and interstitial pages.
