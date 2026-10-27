@@ -1,7 +1,7 @@
 import { parseObject } from "./util.js";
 import type { InterstitialResult } from "../shared/results.js";
 import { Session } from "../index.js";
-import { sendPayloadRequest } from "../shared/api-client.js";
+import { sendScriptPayloadRequest } from "../shared/api-client.js";
 
 /**
  * Parses the device check URL (`/interstitial/?initialCid`...) from a blocked response body.
@@ -68,5 +68,5 @@ export class InterstitialInput {
  * @returns {Promise<InterstitialResult>} A {@link Promise} that resolves to the interstitial payload and the client hints
  */
 export function generateInterstitialPayload(session: Session, input: InterstitialInput): Promise<InterstitialResult> {
-    return sendPayloadRequest(session, "https://datadome.hypersolutions.co/interstitial", input);
+    return sendScriptPayloadRequest(session, "https://datadome.hypersolutions.co/interstitial", input);
 }

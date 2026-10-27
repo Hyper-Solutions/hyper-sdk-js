@@ -1,6 +1,6 @@
 import {Session} from "../index.js";
 import type { TelemetryResult, TelemetryParamsResult } from "../shared/results.js";
-import {sendRequest, IPayloadWithContextResponse, InvalidApiResponseError} from "../shared/api-client.js";
+import {sendScriptRequest, IPayloadWithContextResponse, InvalidApiResponseError} from "../shared/api-client.js";
 import {SensorInput} from "./sensor.js";
 
 /**
@@ -58,7 +58,7 @@ export class TelemetryParamsInput {
  * @returns {Promise<TelemetryResult>} A {@link Promise} that, when resolved, will contain the header value, context and client hints
  */
 export async function generateTelemetry(session: Session, input: TelemetryInput): Promise<TelemetryResult> {
-    const response = await sendRequest<TelemetryInput, IPayloadWithContextResponse>(
+    const response = await sendScriptRequest<TelemetryInput, IPayloadWithContextResponse>(
         session,
         "https://akm.hypersolutions.co/v1/telemetry",
         input,
@@ -87,7 +87,7 @@ export async function generateTelemetry(session: Session, input: TelemetryInput)
  * @returns {Promise<TelemetryParamsResult>} A {@link Promise} that, when resolved, will contain the get_params path and a context
  */
 export async function getTelemetryParams(session: Session, input: TelemetryParamsInput): Promise<TelemetryParamsResult> {
-    const response = await sendRequest<TelemetryParamsInput, IPayloadWithContextResponse>(
+    const response = await sendScriptRequest<TelemetryParamsInput, IPayloadWithContextResponse>(
         session,
         "https://akm.hypersolutions.co/v1/telemetry/params",
         input,

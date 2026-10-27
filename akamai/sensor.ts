@@ -1,6 +1,6 @@
 import {Session} from "../index.js";
 import type { SensorResult } from "../shared/results.js";
-import {sendRequest, IPayloadWithContextResponse, InvalidApiResponseError} from "../shared/api-client.js";
+import {sendScriptRequest, IPayloadWithContextResponse, InvalidApiResponseError} from "../shared/api-client.js";
 
 /**
  * Sensor data input.
@@ -52,7 +52,7 @@ export class SensorInput {
  * @returns {Promise<SensorResult>} A {@link Promise} that, when resolved, will contain sensor data, context and client hints
  */
 export async function generateSensorData(session: Session, input: SensorInput): Promise<SensorResult> {
-    const response = await sendRequest<SensorInput, IPayloadWithContextResponse>(
+    const response = await sendScriptRequest<SensorInput, IPayloadWithContextResponse>(
         session,
         "https://akm.hypersolutions.co/v2/sensor",
         input,

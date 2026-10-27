@@ -95,6 +95,12 @@ export interface KasadaPowResult {
     payload: string;
 }
 
+/** Returned by {@link getKasadaVersion}. */
+export interface KasadaVersionResult {
+    /** The x-kpsdk-v value, sent verbatim on the /fp request and in the x-kpsdk-v header. */
+    version: string;
+}
+
 /** Returned by {@link generateBotIDHeader}. */
 export interface BotIDHeaderResult {
     /** The x-is-human header value. */

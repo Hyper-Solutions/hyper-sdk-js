@@ -1,6 +1,6 @@
 import { parseObject } from "./util.js";
 import type { SliderResult } from "../shared/results.js";
-import { sendPayloadRequest } from "../shared/api-client.js";
+import { sendScriptPayloadRequest } from "../shared/api-client.js";
 import { Session } from "../index.js";
 
 /**
@@ -110,5 +110,5 @@ export class SliderInput {
  * @returns {Promise<SliderResult>} A {@link Promise} that resolves to the slider check URL and the client hints
  */
 export function generateSliderPayload(session: Session, input: SliderInput): Promise<SliderResult> {
-    return sendPayloadRequest(session, "https://datadome.hypersolutions.co/slider", input);
+    return sendScriptPayloadRequest(session, "https://datadome.hypersolutions.co/slider", input);
 }
