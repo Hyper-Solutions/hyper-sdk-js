@@ -1,4 +1,5 @@
 import assert from "assert";
+import type { UtmvcResult } from "../shared/results.js";
 import { Session } from "../index.js";
 import { sendRequest, IUtmvcResponse, InvalidApiResponseError } from "../shared/api-client.js";
 
@@ -93,9 +94,9 @@ export class UtmvcInput {
  * Generates a `___utmvc` cookie.
  * @param session The {@link Session}
  * @param input The {@link UtmvcInput}
- * @returns {Promise<{payload: string, swhanedl: string | undefined}>} A {@link Promise} that, when resolved, will contain a `___utmvc` cookie
+ * @returns {Promise<UtmvcResult>} A {@link Promise} that, when resolved, will contain a `___utmvc` cookie
  */
-export async function generateUtmvcCookie(session: Session, input: UtmvcInput): Promise<{payload: string, swhanedl: string | undefined}> {
+export async function generateUtmvcCookie(session: Session, input: UtmvcInput): Promise<UtmvcResult> {
     const response = await sendRequest<UtmvcInput, IUtmvcResponse>(
         session,
         "https://incapsula.hypersolutions.co/utmvc",

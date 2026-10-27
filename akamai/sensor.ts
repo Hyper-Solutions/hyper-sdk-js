@@ -1,4 +1,5 @@
 import {Session} from "../index.js";
+import type { SensorResult } from "../shared/results.js";
 import {sendRequest, IPayloadWithContextResponse, InvalidApiResponseError} from "../shared/api-client.js";
 
 /**
@@ -48,12 +49,9 @@ export class SensorInput {
  * Generates sensor data that can be used to obtain a valid `_abck` cookie.
  * @param session The {@link Session}
  * @param input The {@link SensorInput}
- * @returns {Promise<{payload: string, context: string}>} A {@link Promise} that, when resolved, will contain sensor data and context
+ * @returns {Promise<SensorResult>} A {@link Promise} that, when resolved, will contain sensor data, context and client hints
  */
-export async function generateSensorData(session: Session, input: SensorInput): Promise<{
-    payload: string,
-    context: string
-}> {
+export async function generateSensorData(session: Session, input: SensorInput): Promise<SensorResult> {
     const response = await sendRequest<SensorInput, IPayloadWithContextResponse>(
         session,
         "https://akm.hypersolutions.co/v2/sensor",
@@ -70,6 +68,7 @@ export async function generateSensorData(session: Session, input: SensorInput): 
 
     return {
         payload: response.payload!,
-        context: response.context!
+        context: response.context!,
+        clientHints: response.headers
     };
 }

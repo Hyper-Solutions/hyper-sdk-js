@@ -39,6 +39,23 @@ console.log(`Generated sensor data: ${result.payload}`);
 console.log(`Sensor context: ${result.context}`);
 ```
 
+Every `generate*` function resolves to a result object (`SensorResult`, `SbsdResult`, ...), so fields the API adds later arrive without breaking your code.
+
+### Client hints (Accept-CH)
+
+Sensor, SBSD, Reese84, Kasada payload and DataDome results carry `clientHints`: the `sec-ch-*`, `device-memory`, `dpr`, `viewport-width`, `ect`, `rtt` and `downlink` headers for the device the payload was generated for, keyed by lowercase header name and ready to send verbatim. Send only the ones the site asked for in its `Accept-CH` response header:
+
+```typescript
+const requested = (response.headers.get("accept-ch") ?? "")
+    .split(",").map((h) => h.trim().toLowerCase()).filter(Boolean);
+const hints = Object.fromEntries(
+    requested.filter((name) => result.clientHints?.[name] !== undefined)
+        .map((name) => [name, result.clientHints![name]])
+);
+```
+
+`clientHints` is `undefined` when the API returns none (Safari user agents, and payloads built by a remote browser).
+
 ## ✨ Features
 
 - 🛡️ **Akamai Bot Manager**: Generate sensor data, handle pixel challenges, validate cookies
@@ -172,9 +189,10 @@ const scriptUrls = parsePixelScriptUrl(htmlContent);
 const scriptVar = parsePixelScriptVar(scriptContent);
 
 // Generate pixel data
-const pixelData = await generatePixelData(session, new PixelInput(
+const result = await generatePixelData(session, new PixelInput(
     // pixel input fields
 ));
+// result.payload is the pixel data
 ```
 
 ### SBSD Challenge Solving
@@ -184,9 +202,13 @@ Generate SBSD data for specialized Akamai challenges:
 ```typescript
 import { SbsdInput, generateSbsdPayload } from 'hyper-sdk-js';
 
-const sbsdData = await generateSbsdPayload(session, new SbsdInput(
-    // sbsd input fields
+const result = await generateSbsdPayload(session, new SbsdInput(
+    // sbsd input fields; the optional last argument, scriptUrl, is the
+    // absolute src of the SBSD script tag, query included
 ));
+// POST result.payload; pass result.context in the next SbsdInput instead of the script.
+// A hard block (an SBSD POST with a `t` parameter) always sends the script with an
+// empty context, never one from an earlier request.
 ```
 
 ## 🔒 Incapsula Protection
@@ -200,9 +222,10 @@ Create **Reese84 sensor data** for Incapsula bypass:
 ```typescript
 import { Reese84Input, generateReese84Sensor } from 'hyper-sdk-js';
 
-const sensorData = await generateReese84Sensor(session, new Reese84Input(
+const result = await generateReese84Sensor(session, new Reese84Input(
     // reese84 input fields
 ));
+// result.payload is the sensor, result.clientHints the Accept-CH headers
 ```
 
 ### UTMVC Cookie Generation
@@ -265,11 +288,13 @@ Create **x-kpsdk-ct tokens** for Kasada bypass:
 import { KasadaPayloadInput, generateKasadaPayload } from 'hyper-sdk-js';
 
 const result = await generateKasadaPayload(session, new KasadaPayloadInput(
-    // kasada payload input fields
+    // kasada payload input fields; the optional last argument, strict, refuses
+    // a payload built on a signal the API cannot identify yet instead of
+    // returning one built on a guess (off by default)
 ));
 
-const payload = result.payload;
-const headers = result.headers;
+// POST the base64-decoded result.payload to /tl with the x-kpsdk-* values in result.headers.
+// result.clientHints are the Accept-CH headers: send only the ones the site asked for.
 ```
 
 ### Generating POW Data (CD)
@@ -279,9 +304,10 @@ Solve **Kasada Proof-of-Work** challenges for x-kpsdk-cd tokens:
 ```typescript
 import { KasadaPowInput, generateKasadaPow } from 'hyper-sdk-js';
 
-const powPayload = await generateKasadaPow(session, new KasadaPowInput(
+const result = await generateKasadaPow(session, new KasadaPowInput(
     // kasada pow input fields
 ));
+// result.payload is the x-kpsdk-cd value
 ```
 
 ### Script Path Extraction
@@ -335,9 +361,8 @@ const result = await generateInterstitialPayload(session, new InterstitialInput(
     // interstitial input fields
 ));
 
-const payload = result.payload;
-const headers = result.headers;
-// POST payload to https://geo.captcha-delivery.com/interstitial/
+// POST result.payload to https://geo.captcha-delivery.com/interstitial/
+// result.clientHints are the Accept-CH headers for the device
 ```
 
 ### Slider Captcha Solving
@@ -362,9 +387,8 @@ if (parseResult.isIpBanned) {
         // slider input fields
     ));
 
-    const checkUrl = result.payload;
-    const headers = result.headers;
-    // GET request to checkUrl
+    // GET request to result.payload (the check URL)
+    // result.clientHints are the Accept-CH headers for the device
 }
 ```
 
@@ -411,9 +435,10 @@ Generate **DataDome tags payload**:
 ```typescript
 import { TagsInput, generateTagsPayload } from 'hyper-sdk-js';
 
-const tagsPayload = await generateTagsPayload(session, new TagsInput(
+const result = await generateTagsPayload(session, new TagsInput(
     // tags input fields
 ));
+// result.payload is the tags payload
 ```
 
 ## 📖 Documentation

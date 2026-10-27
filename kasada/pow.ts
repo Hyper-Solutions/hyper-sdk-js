@@ -1,4 +1,5 @@
 import { Session } from "../index.js";
+import type { KasadaPowResult } from "../shared/results.js";
 import { sendPayloadRequest } from "../shared/api-client.js";
 
 /**
@@ -53,8 +54,9 @@ export class KasadaPowInput {
  * Generates Kasada POW (x-kpsdk-cd).
  * @param session The {@link Session}
  * @param input The {@link KasadaPowInput}
- * @returns {Promise<string>} A {@link Promise} that, when resolved, will contain the x-kpsdk-cd token.
+ * @returns {Promise<KasadaPowResult>} A {@link Promise} that, when resolved, will contain the x-kpsdk-cd token.
  */
-export async function generateKasadaPow(session: Session, input: KasadaPowInput): Promise<string> {
-    return sendPayloadRequest(session, "https://kasada.hypersolutions.co/cd", input);
+export async function generateKasadaPow(session: Session, input: KasadaPowInput): Promise<KasadaPowResult> {
+    const { payload } = await sendPayloadRequest(session, "https://kasada.hypersolutions.co/cd", input);
+    return { payload };
 }

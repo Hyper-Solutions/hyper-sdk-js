@@ -1,5 +1,6 @@
 import { parseObject } from "./util.js";
-import { sendPayloadWithHeadersRequest } from "../shared/api-client.js";
+import type { SliderResult } from "../shared/results.js";
+import { sendPayloadRequest } from "../shared/api-client.js";
 import { Session } from "../index.js";
 
 /**
@@ -106,8 +107,8 @@ export class SliderInput {
  * Generates a DataDome slider payload that can be used to obtain a solved `datadome` cookie.
  * @param session The {@link Session}
  * @param input The {@link SliderInput} containing required parameters for slider payload generation
- * @returns {Promise<{payload: string, headers: {[key: string]: string}}>} A {@link Promise} that resolves to an object containing the slider payload and response headers
+ * @returns {Promise<SliderResult>} A {@link Promise} that resolves to the slider check URL and the client hints
  */
-export function generateSliderPayload(session: Session, input: SliderInput): Promise<{ payload: string, headers: { [key: string]: string } }> {
-    return sendPayloadWithHeadersRequest(session, "https://datadome.hypersolutions.co/slider", input);
+export function generateSliderPayload(session: Session, input: SliderInput): Promise<SliderResult> {
+    return sendPayloadRequest(session, "https://datadome.hypersolutions.co/slider", input);
 }

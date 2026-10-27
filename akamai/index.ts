@@ -1,4 +1,5 @@
 export * from './sensor.js';
+export * from './telemetry.js';
 export * from './pixel.js';
 export * from './sbsd.js';
 export * from './script_path.js';
