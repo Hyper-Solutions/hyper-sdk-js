@@ -1,4 +1,5 @@
 import { Agent, ProxyAgent, request } from 'undici';
+import { createHash } from "crypto";
 import { promisify } from "util";
 import * as zlib from "zlib";
 import { CompressionType, generateSignature, Session } from "../index.js";
@@ -71,6 +72,19 @@ export async function sendRequest<TInput = any, TResponse extends IBaseApiRespon
     input: TInput,
     validateResponse?: (response: TResponse) => void
 ): Promise<TResponse> {
+    const { statusCode, result } = await postRequest<TInput, TResponse>(session, url, input);
+    return checkResponse(statusCode, result, validateResponse);
+}
+
+/**
+ * Sends the request and returns the status code with the parsed body, without
+ * checking either.
+ */
+async function postRequest<TInput, TResponse extends IBaseApiResponse>(
+    session: Session,
+    url: string,
+    input: TInput
+): Promise<{ statusCode: number; result: TResponse }> {
     // Validate session
     if (!session.apiKey) {
         throw new InvalidApiResponseError("Missing API key");
@@ -167,14 +181,34 @@ export async function sendRequest<TInput = any, TResponse extends IBaseApiRespon
             throw new InvalidApiResponseError(`Invalid JSON response: ${err}`);
         }
 
+        return { statusCode: response.statusCode, result };
+
+    } catch (err) {
+        if (err instanceof InvalidApiResponseError) {
+            throw err;
+        }
+        throw new InvalidApiResponseError(`Request failed: ${err}`);
+    }
+}
+
+/**
+ * Throws on an API error, a non-200 status code or a failed custom validation,
+ * and otherwise returns the response.
+ */
+function checkResponse<TResponse extends IBaseApiResponse>(
+    statusCode: number,
+    result: TResponse,
+    validateResponse?: (response: TResponse) => void
+): TResponse {
+    try {
         // Validate response
         if (result.error) {
             throw new InvalidApiResponseError(result.error);
         }
 
         // Check status code
-        if (response.statusCode !== 200) {
-            throw new InvalidApiResponseError(`Bad HTTP status code ${response.statusCode}`);
+        if (statusCode !== 200) {
+            throw new InvalidApiResponseError(`Bad HTTP status code ${statusCode}`);
         }
 
         // Run custom validation if provided
@@ -183,13 +217,46 @@ export async function sendRequest<TInput = any, TResponse extends IBaseApiRespon
         }
 
         return result;
-
     } catch (err) {
         if (err instanceof InvalidApiResponseError) {
             throw err;
         }
         throw new InvalidApiResponseError(`Request failed: ${err}`);
     }
+}
+
+/**
+ * The hash the API identifies a challenge script by: the lowercase hex sha256
+ * of the script's UTF-8 bytes, exactly as the site served it.
+ */
+export function scriptHash(script: string): string {
+    return createHash("sha256").update(script, "utf8").digest("hex");
+}
+
+/**
+ * Sends a request that carries a challenge script with only the script's hash
+ * in place of the script. The API answers 422 script_required only for a
+ * script no client has sent yet, and the request is then sent once more with
+ * the script, which the API stores for every later request. A request without
+ * a script is sent unchanged. The caller's input is never modified.
+ */
+export async function sendScriptRequest<TInput extends { script?: string }, TResponse extends IBaseApiResponse = IBaseApiResponse>(
+    session: Session,
+    url: string,
+    input: TInput,
+    validateResponse?: (response: TResponse) => void
+): Promise<TResponse> {
+    if (!input.script) {
+        return sendRequest<TInput, TResponse>(session, url, input, validateResponse);
+    }
+
+    const { script, ...withoutScript } = input;
+    const hashed = { ...withoutScript, scriptHash: scriptHash(script) };
+    const { statusCode, result } = await postRequest<typeof hashed, TResponse>(session, url, hashed);
+    if (statusCode === 422 && result?.error === "script_required") {
+        return sendRequest<TInput, TResponse>(session, url, input, validateResponse);
+    }
+    return checkResponse(statusCode, result, validateResponse);
 }
 
 /**
@@ -240,21 +307,35 @@ export async function sendPayloadRequest<TInput = any>(
     url: string,
     input: TInput
 ): Promise<{ payload: string; clientHints?: ClientHints }> {
-    const response = await sendRequest<TInput, IPayloadResponse>(
-        session,
-        url,
-        input,
-        (res) => {
-            if (!res.payload) {
-                throw new InvalidApiResponseError("No payload obtained from API");
-            }
-        }
-    );
+    const response = await sendRequest<TInput, IPayloadResponse>(session, url, input, requirePayload);
 
     return {
         payload: response.payload!,
         clientHints: response.headers
     };
+}
+
+/**
+ * {@link sendPayloadRequest} for the endpoints that take a challenge script,
+ * sent through {@link sendScriptRequest}.
+ */
+export async function sendScriptPayloadRequest<TInput extends { script?: string }>(
+    session: Session,
+    url: string,
+    input: TInput
+): Promise<{ payload: string; clientHints?: ClientHints }> {
+    const response = await sendScriptRequest<TInput, IPayloadResponse>(session, url, input, requirePayload);
+
+    return {
+        payload: response.payload!,
+        clientHints: response.headers
+    };
+}
+
+function requirePayload(res: IPayloadResponse): void {
+    if (!res.payload) {
+        throw new InvalidApiResponseError("No payload obtained from API");
+    }
 }
 
 /**

@@ -1,6 +1,6 @@
 import { Session } from "../index.js";
 import type { SbsdResult } from "../shared/results.js";
-import { sendRequest, IPayloadWithContextResponse, InvalidApiResponseError } from "../shared/api-client.js";
+import { sendScriptRequest, IPayloadWithContextResponse, InvalidApiResponseError } from "../shared/api-client.js";
 
 /**
  * Sbsd input.
@@ -50,7 +50,7 @@ export class SbsdInput {
  * @returns {Promise<SbsdResult>} A {@link Promise} that, when resolved, will contain sbsd sensor data, context and client hints
  */
 export async function generateSbsdPayload(session: Session, input: SbsdInput): Promise<SbsdResult> {
-    const response = await sendRequest<SbsdInput, IPayloadWithContextResponse>(
+    const response = await sendScriptRequest<SbsdInput, IPayloadWithContextResponse>(
         session,
         "https://akm.hypersolutions.co/sbsd",
         input,

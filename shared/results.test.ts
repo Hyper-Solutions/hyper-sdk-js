@@ -97,7 +97,11 @@ test("telemetry sends the flat sensor request plus j, each method on its own end
     respondWith({ payload: "/_bm/get_params?type=web-jsto&v=aN+c/9=", context: "c" });
     const res = await getTelemetryParams(session, new TelemetryParamsInput("https://example.com/", "s"));
     expect(mockRequest.mock.calls[0][0]).toBe("https://akm.hypersolutions.co/v1/telemetry/params");
-    expect(sentBodies()[0]).toEqual({ pageUrl: "https://example.com/", script: "s", context: "" });
+    // A script is sent as its hash first (see script_hash.test.ts).
+    expect(sentBodies()[0]).toEqual({
+        pageUrl: "https://example.com/", context: "",
+        scriptHash: "043a718774c572bd8a25adbeb1bfcd5c0256ae11cecf9f9c3f925d0e52beaf89",
+    });
     expect(res).toEqual({ path: "/_bm/get_params?type=web-jsto&v=aN+c/9=", context: "c" });
 });
 
