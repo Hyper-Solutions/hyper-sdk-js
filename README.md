@@ -361,6 +361,8 @@ const result = await generateKasadaPayload(session, new KasadaPayloadInput(
 ));
 ```
 
+Available in `hyper-sdk-js` 5.2.0 and later.
+
 ## 🎯 DataDome Solutions
 
 Solve **DataDome captchas** including slider challenges and interstitial pages.
