@@ -4,3 +4,4 @@ export * from './script_path.js';
 export * from './botid.js';
 export * from './version.js';
 export * from './user_agent.js';
+export * from './dv.js';

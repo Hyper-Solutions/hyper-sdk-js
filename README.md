@@ -338,6 +338,31 @@ const userAgent = generateKasadaUserAgent({
 
 Available in `hyper-sdk-js` 4.1.0 and later.
 
+### Mobile x-kpsdk-dv Generation
+
+On iOS the Kasada SDK (`x-kpsdk-v` i-2.x) also sends an **`x-kpsdk-dv`** header describing the device and the app. Build it from the same values as the user-agent, plus the model identifier, and pass the same value as `dv` on the payload request so the payload is generated on an iPhone with that model's screen and iOS version:
+
+```typescript
+import { KasadaPayloadInput, generateKasadaDv, generateKasadaUserAgent } from 'hyper-sdk-js';
+
+const device = {
+    osVersion: '18.0.1',
+    hardwareId: 'iPhone13,2',       // utsname.machine: "iPhone13,2" is an iPhone 12
+    bundleId: 'com.example.app',
+    appVersion: '9.15.0',
+};
+const userAgent = generateKasadaUserAgent(device);
+const dv = generateKasadaDv(device);
+
+const result = await generateKasadaPayload(session, new KasadaPayloadInput(
+    userAgent, ipsLink, script, ip, 'en-US,en;q=0.9',
+    false, // strict
+    dv,    // the x-kpsdk-dv value you send to the site
+));
+```
+
+Available in `hyper-sdk-js` 5.2.0 and later.
+
 ## 🎯 DataDome Solutions
 
 Solve **DataDome captchas** including slider challenges and interstitial pages.

@@ -12,6 +12,7 @@ export class KasadaPayloadInput {
     readonly acceptLanguage: string;
     readonly ip: string;
     readonly strict?: boolean;
+    readonly dv?: string;
 
     /**
      * Creates a new instance.
@@ -21,8 +22,9 @@ export class KasadaPayloadInput {
      * @param ip The IPV4 address of your network or proxy.
      * @param acceptLanguage Your accept-language header.
      * @param strict Refuse the payload instead of returning one built on a guess when the script has a signal the API cannot identify yet. The request then fails with "Unidentified signals in script; refusing payload because strict was set". Off by default: such a payload usually still works.
+     * @param dv The `x-kpsdk-dv` header the iOS app flow sends, exactly as sent (see {@link generateKasadaDv}). Optional, iOS app user agents only: the payload is then generated on a device with the screen of the model it names and the iOS release it names, so the two agree.
      */
-    public constructor(userAgent: string, ipsLink: string, script: string, ip: string, acceptLanguage: string, strict: boolean = false) {
+    public constructor(userAgent: string, ipsLink: string, script: string, ip: string, acceptLanguage: string, strict: boolean = false, dv?: string) {
         this.userAgent = userAgent;
         this.ipsLink = ipsLink;
         this.script = script;
@@ -30,6 +32,7 @@ export class KasadaPayloadInput {
         this.acceptLanguage = acceptLanguage;
         // Left out of the request body unless set.
         this.strict = strict || undefined;
+        this.dv = dv || undefined;
     }
 }
 
