@@ -108,6 +108,21 @@ const session = new Session(
 );
 ```
 
+### Checking Usage
+
+`getUsage` returns the key's pay-as-you-go balance and the remaining requests of each plan. It is not counted as usage.
+
+```typescript
+import { getUsage } from 'hyper-sdk-js';
+
+const usage = await getUsage(session);
+
+console.log(`balance: €${usage.balanceEuro}`);
+for (const plan of usage.plans) {
+    console.log(`${plan.product}: ${plan.requestsRemaining} of ${plan.requestsQuota} left, expires ${plan.expiresAt}`);
+}
+```
+
 ## 🛡️ Akamai Bot Manager
 
 Bypass **Akamai Bot Manager** protection with sensor data generation, cookie validation, and challenge solving.
