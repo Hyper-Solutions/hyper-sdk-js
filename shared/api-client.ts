@@ -72,15 +72,29 @@ export async function sendRequest<TInput = any, TResponse extends IBaseApiRespon
     input: TInput,
     validateResponse?: (response: TResponse) => void
 ): Promise<TResponse> {
-    const { statusCode, result } = await postRequest<TInput, TResponse>(session, url, input);
+    const { statusCode, result } = await apiRequest<TInput, TResponse>(session, url, input);
+    return checkResponse(statusCode, result, validateResponse);
+}
+
+/**
+ * {@link sendRequest} for the endpoints that take no input: sends a GET
+ * without a body.
+ */
+export async function sendGetRequest<TResponse extends IBaseApiResponse = IBaseApiResponse>(
+    session: Session,
+    url: string,
+    validateResponse?: (response: TResponse) => void
+): Promise<TResponse> {
+    const { statusCode, result } = await apiRequest<undefined, TResponse>(session, url, undefined);
     return checkResponse(statusCode, result, validateResponse);
 }
 
 /**
  * Sends the request and returns the status code with the parsed body, without
- * checking either.
+ * checking either. An undefined input sends a GET without a body, anything
+ * else a POST of the input as JSON.
  */
-async function postRequest<TInput, TResponse extends IBaseApiResponse>(
+async function apiRequest<TInput, TResponse extends IBaseApiResponse>(
     session: Session,
     url: string,
     input: TInput
@@ -91,12 +105,12 @@ async function postRequest<TInput, TResponse extends IBaseApiResponse>(
     }
 
     // Prepare request payload
-    const jsonPayload = JSON.stringify(input);
-    let requestBody = Buffer.from(jsonPayload, 'utf8');
+    const hasBody = input !== undefined;
+    let requestBody = hasBody ? Buffer.from(JSON.stringify(input), 'utf8') : undefined;
     let useCompression = false;
 
     // Check if payload should be compressed
-    if (requestBody.length > 1000) {
+    if (requestBody && requestBody.length > 1000) {
         try {
             //@ts-ignore - Type mismatch between Buffer and ArrayBuffer
             requestBody = await compressPayload(requestBody, session.compression);
@@ -108,12 +122,15 @@ async function postRequest<TInput, TResponse extends IBaseApiResponse>(
 
     // Prepare headers
     const headers: Record<string, string> = {
-        'Content-Type': 'application/json',
         'Accept': 'application/json',
         'X-Api-Key': session.apiKey,
         'Accept-Encoding': session.compression,
         'User-Agent': 'Hyper Solutions TypeScript SDK'
     };
+
+    if (hasBody) {
+        headers['Content-Type'] = 'application/json';
+    }
 
     // Set compression header if used
     if (useCompression) {
@@ -135,7 +152,7 @@ async function postRequest<TInput, TResponse extends IBaseApiResponse>(
     try {
         // Prepare request options
         const requestOptions: any = {
-            method: 'POST',
+            method: hasBody ? 'POST' : 'GET',
             headers,
             body: requestBody,
             headersTimeout: session.timeout,
@@ -252,7 +269,7 @@ export async function sendScriptRequest<TInput extends { script?: string }, TRes
 
     const { script, ...withoutScript } = input;
     const hashed = { ...withoutScript, scriptHash: scriptHash(script) };
-    const { statusCode, result } = await postRequest<typeof hashed, TResponse>(session, url, hashed);
+    const { statusCode, result } = await apiRequest<typeof hashed, TResponse>(session, url, hashed);
     if (statusCode === 422 && result?.error === "script_required") {
         return sendRequest<TInput, TResponse>(session, url, input, validateResponse);
     }

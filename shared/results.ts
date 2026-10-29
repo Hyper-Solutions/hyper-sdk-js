@@ -101,6 +101,28 @@ export interface KasadaVersionResult {
     version: string;
 }
 
+/** Returned by {@link getUsage}. */
+export interface UsageResult {
+    /** The pay-as-you-go balance in euros. */
+    balanceEuro: number;
+    /** The plans of the API key, one per product. */
+    plans: UsagePlan[];
+}
+
+/** The quota of one plan in a {@link UsageResult}. */
+export interface UsagePlan {
+    /** The product the plan covers, such as "akamai" or "datadome". */
+    product: string;
+    /** The number of requests used from the plan. */
+    requestsUsed: number;
+    /** The number of requests the plan allows. */
+    requestsQuota: number;
+    /** requestsQuota minus requestsUsed. */
+    requestsRemaining: number;
+    /** When the plan expires, as an ISO 8601 date-time string. */
+    expiresAt: string;
+}
+
 /** Returned by {@link generateBotIDHeader}. */
 export interface BotIDHeaderResult {
     /** The x-is-human header value. */
