@@ -21,6 +21,18 @@ test("Test parseChallengeScriptUrl on a captcha page", () => {
     expect(parseChallengeScriptUrl(input)).toBe("https://ct.captcha-delivery.com/captcha.1.34.0.202609141.js");
 });
 
+test("Test parseChallengeScriptUrl on a bundle without a build segment", () => {
+    const input = `<html><head><script defer src="https://ct.captcha-delivery.com/interstitial.1.36.0.js"></script></head><body></body></html>`;
+
+    expect(parseChallengeScriptUrl(input)).toBe("https://ct.captcha-delivery.com/interstitial.1.36.0.js");
+});
+
+test("Test parseChallengeScriptUrl ignores the versionless loader", () => {
+    const input = `<script src="https://ct.captcha-delivery.com/i.js"></script>`;
+
+    expect(parseChallengeScriptUrl(input)).toBeNull();
+});
+
 test("Test parseChallengeScriptUrl with single quotes", () => {
     const input = `<script defer src='https://ct.captcha-delivery.com/interstitial.1.33.0.202609141.js'></script>`;
 
