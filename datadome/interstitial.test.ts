@@ -27,6 +27,44 @@ test("Test parseChallengeScriptUrl on a bundle without a build segment", () => {
     expect(parseChallengeScriptUrl(input)).toBe("https://ct.captcha-delivery.com/interstitial.1.36.0.js");
 });
 
+test("Test parseChallengeScriptUrl on a bundle with a build prefix", () => {
+    const url = "https://ct.captcha-delivery.com/captcha.build623.01-c-v1.38.0-2026-11-17-05h07.js";
+    const input = `<html><head><script defer src="${url}"></script></head><body></body></html>`;
+
+    expect(parseChallengeScriptUrl(input)).toBe(url);
+});
+
+test("Test parseChallengeScriptUrl finds a build prefix after the inline dd object", () => {
+    const url = "https://ct.captcha-delivery.com/captcha.build623.01-c-v1.38.0-2026-11-17-05h07.js";
+    const input = `<script data-cfasync="false">var dd={'rt':'c'}</script><script data-cfasync="false" src="https://ct.captcha-delivery.com/c.js"></script><script defer src="${url}"></script>`;
+
+    expect(parseChallengeScriptUrl(input)).toBe(url);
+});
+
+test("Test parseChallengeScriptUrl takes any file name", () => {
+    const input = `<script defer src="https://ct.captcha-delivery.com/interstitial-next.js"></script>`;
+
+    expect(parseChallengeScriptUrl(input)).toBe("https://ct.captcha-delivery.com/interstitial-next.js");
+});
+
+test("Test parseChallengeScriptUrl with defer after src", () => {
+    const url = "https://ct.captcha-delivery.com/captcha.build623.01-c-v1.38.0-2026-11-17-05h07.js";
+    const input = `<script src="${url}" defer></script>`;
+
+    expect(parseChallengeScriptUrl(input)).toBe(url);
+});
+
+test("Test parseChallengeScriptUrl takes the first deferred tag", () => {
+    const url = "https://ct.captcha-delivery.com/captcha.build623.01-c-v1.38.0-2026-11-17-05h07.js";
+    const input = `<script defer src="${url}"></script><script defer src="https://example.com/other.js"></script>`;
+
+    expect(parseChallengeScriptUrl(input)).toBe(url);
+});
+
+test("Test parseChallengeScriptUrl does not read defer inside src", () => {
+    expect(parseChallengeScriptUrl(`<script src="https://example.com/defer.js"></script>`)).toBeNull();
+});
+
 test("Test parseChallengeScriptUrl ignores the versionless loader", () => {
     const input = `<script src="https://ct.captcha-delivery.com/i.js"></script>`;
 

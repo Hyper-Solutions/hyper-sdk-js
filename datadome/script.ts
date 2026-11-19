@@ -1,12 +1,14 @@
 /**
- * Matches the tag a challenge page uses to load the bundle from
- * ct.captcha-delivery.com, capturing the URL. The name in front of the version
- * is left open so it keeps matching whatever DataDome calls the bundle, and
- * the build segment after the version is optional: the bundle can be
- * `interstitial.1.33.0.202609141.js`, `captcha.1.34.0.202609141.js` or
- * `interstitial.1.36.0.js`.
+ * A challenge page loads its bundle with the only deferred `<script>` tag on
+ * the page, so the bundle is the src of the first tag carrying a defer
+ * attribute. The file name is not checked: DataDome renames the bundle freely,
+ * e.g. `interstitial.1.36.0.js` or
+ * `captcha.build623.01-c-v1.38.0-2026-11-17-05h07.js`. The `c.js` and `i.js`
+ * loaders are not deferred and never match.
  */
-const challengeScriptRegex = /<script[^>]+src\s*=\s*["']([^"']*\/[a-z_-]+\.\d+\.\d+\.\d+(?:\.[^"']*)?\.js)["']/;
+const scriptTagRegex = /<script\b([^>]*)>/gi;
+const deferAttrRegex = /(?:^|\s)defer(?:\s|=|\/|$)/i;
+const srcAttrRegex = /(?:^|\s)src\s*=\s*["']([^"']+)["']/i;
 
 /**
  * Returns the challenge bundle URL that a device check or captcha page loads
@@ -43,10 +45,16 @@ const challengeScriptRegex = /<script[^>]+src\s*=\s*["']([^"']*\/[a-z_-]+\.\d+\.
  * ```
  */
 export function parseChallengeScriptUrl(html: string): string | null {
-    const matches = challengeScriptRegex.exec(html);
-    if (matches == null || matches.length !== 2 || matches[1] == null) {
-        return null;
+    for (const tag of html.matchAll(scriptTagRegex)) {
+        const attrs = tag[1] ?? "";
+        if (!deferAttrRegex.test(attrs)) {
+            continue;
+        }
+        const src = srcAttrRegex.exec(attrs);
+        if (src != null && src[1] != null) {
+            return src[1];
+        }
     }
 
-    return matches[1];
+    return null;
 }
