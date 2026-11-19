@@ -1,12 +1,14 @@
 /**
  * Matches the tag a challenge page uses to load the bundle from
- * ct.captcha-delivery.com, capturing the URL. The name in front of the version
- * is left open so it keeps matching whatever DataDome calls the bundle, and
- * the build segment after the version is optional: the bundle can be
- * `interstitial.1.33.0.202609141.js`, `captcha.1.34.0.202609141.js` or
- * `interstitial.1.36.0.js`.
+ * ct.captcha-delivery.com, capturing the URL. The name in front of the first
+ * dot is left open so it keeps matching whatever DataDome calls the bundle,
+ * and the version can sit anywhere after it: the bundle can be
+ * `interstitial.1.33.0.202609141.js`, `captcha.1.34.0.202609141.js`,
+ * `interstitial.1.36.0.js` or
+ * `captcha.build623.01-c-v1.38.0-2026-11-17-05h07.js`. A file with no
+ * version, such as the `i.js` or `c.js` loader, never matches.
  */
-const challengeScriptRegex = /<script[^>]+src\s*=\s*["']([^"']*\/[a-z_-]+\.\d+\.\d+\.\d+(?:\.[^"']*)?\.js)["']/;
+const challengeScriptRegex = /<script[^>]+src\s*=\s*["']([^"']*\/[a-z_-]+\.[^"'/]*?\d+\.\d+\.\d+[^"'/]*\.js)["']/;
 
 /**
  * Returns the challenge bundle URL that a device check or captcha page loads
